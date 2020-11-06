@@ -1,25 +1,41 @@
 Entity Project {
             scaffold
-            String nameOfProject;
+            String name;
             String description;
-            Date dateOfLaunch;  // zaciatok projektu. Vygeneruje sa automaticky v den zapisu do systemu
+            Date launchDate;  // zaciatok projektu. Vygeneruje sa automaticky v den zapisu do systemu
             - List<@Task> tasks <-> project inverse;
 
-curl -i -H "Content-Type: application/json" -X POST -d "{\"nameOfProject\":\"EIC-back office\", \"description\":\"Aktualizacia sucasneho back office riesenia\"}" http://localhost:8888/rest/project
+curl -i -H "Content-Type: application/json" -X POST -d "{\"name\":\"EIC-back office\", \"description\":\"Aktualizacia sucasneho back office riesenia\"}" http://localhost:8888/rest/project
+
+Entity Deployment {
+            scaffold
+            String label;  // vygeneruje sa automaticky, napr. deployment test
+            - @Environment environment;
+            Date date;
+            - List<@Task> tasks;  // tasky, ktorych sa zmena environment tyka
+
+curl -i -H "Content-Type: application/json" -X POST -d "{\"label\":\"deployment test\", \"environment\":\"TEST\", \"date\":\"2020-11-06\"}" http://localhost:8888/rest/deployment            
+            
 
 Entity Task {
            scaffold
            - @Project project <-> tasks cascade="persist,merge";  // k akemu projektu patri
-           String nameOfTask;
+           String name;
            String description;
-           - @Type typeOfTask;
-           Date dateOfOrigin;  // datum vzniku ulohy. Vygeneruje sa automaticky v den zapisu do systemu
-           - @Priority taskPriority;
+           - @Type taskType;
+           Date originDate;  // datum vzniku ulohy. Vygeneruje sa automaticky v den zapisu do systemu
+           - @Priority priority;
            Date deadline;
-           - @CompletionState state;  // stav rozpracovanosti
+           - @TaskStatus status;  // stav rozpracovanosti
            - List<@Communication> communications <-> task inverse;
+           - List<@TimeLine> timeLines <-> task inverse;  // casovy sled udalosti s taskom
+           - @Environment placement; // v akom prostredi je task
 
-curl -i -H "Content-Type: application/json" -X POST -d "{\"project\": {\"id\": 1}, \"nameOfTask\":\"uprava cash reportu\", \"description\":\"Upravit cash report tak, aby polozka clientId sa zmenila na customerId\", \"typeOfTask\":\"changeRequest\", \"taskPriority\":\"high\", \"deadline\":\"2020-11-06\", \"state\":\"acceptedByVendor\"}" http://localhost:8888/rest/task
+curl -i -H "Content-Type: application/json" -X POST -d "{\"project\": {\"id\": 2}, \"name\": \"uprava cash reportu\", \"description\": \"Upravit cash report tak, aby polozka clientId sa zmenila na customerId\", \"taskType\": \"NewFunction\", \"priority\": \High\", \"deadline\": \"2020-11-13\", \"status\": \"Returned\", \"placement\": \"DEV\"}" http://localhost:8888/rest/task
+
+
+
+
 
 curl -i -H "Content-Type: application/json" -X POST -d "{\"project\": {\"id\": 1}, \"nameOfTask\":\"nespravne zaokruhlovanie\", \"description\":\"Pri zavierke nespravne zaokruhli pocty kupenych CP\", \"typeOfTask\":\"bug\", \"taskPriority\":\"urgent\", \"deadline\":\"2020-11-05\", \"state\":\"acceptedByVendor\"}" http://localhost:8888/rest/task
 
