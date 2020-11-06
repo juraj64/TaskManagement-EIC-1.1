@@ -1,0 +1,165 @@
+Application TaskManagement {
+    basePackage=sk.f4s.easytodev
+
+    Module web {
+
+ 	    Resource FrontResource {
+			String front return="front/overview";
+	    }
+
+	    Resource ProjectResource {
+             scaffold
+        }
+
+        Resource DeploymentResource {
+              scaffold
+        }
+
+        Resource TaskResource {
+             scaffold
+        }
+
+        Resource TimeLineResource {
+             scaffold
+        }
+
+        Resource UseerResource {
+            scaffold
+        }
+
+        Resource CommunicationResource {
+            scaffold
+        }
+	}
+
+	Module tasks {
+
+        Entity Project {
+            scaffold
+            String name;
+            String description;
+            Date launchDate;  // zaciatok projektu. Vygeneruje sa automaticky v den zapisu do systemu
+            - List<@Task> tasks <-> project inverse;
+
+            Repository ProjectRepository {
+                findByCondition;
+            }
+       }
+
+       // ak niekto z developerov alebo operations urobi build v jenkinse a nasadi ho bud do TEST alebo RUT, tak vytvori novy zaznam.
+       //ak urobi deployment do testovacieho prostredia, tak vsetkym resolved taskom  sa zmeni placement na TEST
+       // ak urobi deploy do RUT, tak vsetky tasky, ktore maju placement TEST, sa im zmeni placement na RUT
+       Entity Deployment {
+            scaffold
+            String label;  // vygeneruje sa automaticky, napr. deployment test
+            - @Environment environment;
+            Date date;
+            - List<@Task> tasks;  // tasky, ktorych sa zmena environment tyka
+
+            Repository DeploymentRepository {
+                findByCondition;
+            }
+       }
+
+       enum Environment {
+            DEV, TEST, RUT
+       }
+
+       Entity Task {
+           scaffold
+           - @Project project <-> tasks cascade="persist,merge";  // k akemu projektu patri
+           String name;
+           String description;
+           - @Type taskType;
+           Date originDate;  // datum vzniku ulohy. Vygeneruje sa automaticky v den zapisu do systemu
+           - @Priority priority;
+           Date deadline;
+           - @TaskStatus status;  // stav rozpracovanosti
+           - List<@Communication> communications <-> task inverse;
+           - List<@TimeLine> timeLines <-> task inverse;  // casovy sled udalosti s taskom
+           - @Environment placement; // v akom prostredi je task
+
+           Repository TaskRepository {
+              findByCondition;
+           }
+       }
+
+        enum Type {
+           NewFunction, ChangeRequest, Bug, Other;
+        }
+
+        enum Priority {
+           Urgent, High, Medium, Low;
+        }
+
+        enum TaskStatus {
+             Created,  // ked klient vytvori novy incident
+             Returned, // ked klient vrati zo stavu resolved v prostredi TEST alebo RUT
+             Accepted, // developer nastavi ked zacne na nom pracovat na DEV prostredi
+             Resolved  // developer nastavi ked ho na DEV prostredi vyriesi
+        }
+
+        // historia tasku napr.
+        // vytvoreny 1.9.2020 --> v risesni 8.9.2020 --> vyrieseny 9.9.2020 --> nasadeny Test 1.10.2020 -->
+        // vrateny 2.10.2020 --> v rieseni 2.10.2020 --> nasadeny Test 2.10.2010 --> nasadeny RUT 1.12.2020
+        Entity TimeLine {
+            scaffold
+            Date date;
+            String label; // kombinacia TaskStatus a Environment. Automaticky alebo aj rucne?
+            - @Useer useer;
+            - @Task task <-> timeLines cascade="persist,merge";  // k akemu tasku patri
+
+            Repository TimeLineRepository {
+                findByCondition;
+            }
+        }
+
+        Entity Useer {
+            scaffold
+            String name;
+            String role; // este sa doplni viac fieldov
+
+            Repository UseerRepository {
+                 findByCondition;
+            }
+        }
+
+        Entity Communication {
+            scaffold
+            - @Task task <-> communications cascade="persist,merge";  // k akemu tasku patri
+            - @Useer sender;
+            - @Useer recipient;
+            String content;    // vlastna komunikacia
+            Date date; // v den zapisu do systemu, vygeneruje sa automaticky
+
+            Repository CommunicationRepository {
+                findByCondition;
+            }
+        }
+
+        Service ProjectService {
+            findByCondition => ProjectRepository.findByCondition;
+        }
+
+        Service DeploymentService {
+            findByCondition => DeploymentRepository.findByCondition;
+        }
+
+        Service TaskService {
+            findByCondition => TaskRepository.findByCondition;
+        }
+
+        Service TimeLineService {
+            findByCondition => TimeLineRepository.findByCondition;
+        }
+
+        Service UseerService {
+           findByCondition => UseerRepository.findByCondition;
+        }
+
+        Service CommunicationService {
+            findByCondition => CommunicationRepository.findByCondition;
+        }
+    }
+
+}

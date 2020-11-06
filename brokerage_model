@@ -1,0 +1,295 @@
+Application BrokerageApp {
+    basePackage=com.jurajlazovy
+
+    Module web {
+
+        Resource FrontResource {
+            String front return="front/overview";
+        }
+
+        Resource AccountResource {
+            scaffold
+        }
+
+        Resource SecuritiesResource {
+            scaffold
+        }
+
+        Resource InstrumentResource {
+            scaffold
+        }
+
+        Resource MoneyResource {
+            scaffold
+        }
+
+        Resource ExchangeRateResource {
+             scaffold
+        }
+
+        Resource SecuritiesTransactionResource {
+            scaffold
+        }
+
+        Resource MoneyTransactionResource {
+           scaffold
+        }
+
+        Resource ForexTransactionResource {
+            scaffold
+        }
+
+        Resource StatementResource {
+            scaffold
+        }
+
+    }
+
+    Module brokerage {
+
+        Entity Account {
+            scaffold
+            String firstName;
+            String lastName;
+            String idNumber key changeable;
+            Date dateOfBirth;
+            - List<@Securities> stocks <-> account inverse;
+            - List<@Money> cashes <-> account inverse;
+            - List<@SecuritiesTransaction> transactions <-> account inverse;
+            - List<@MoneyTransaction> movements <-> account inverse;
+            - List<@ForexTransaction> fxFlows <-> account inverse;
+
+            Repository AccountRepository {
+               findByCondition;
+            }
+        }
+
+        Entity Securities {
+              scaffold
+              - @Account account <-> stocks cascade="persist,merge";
+              String clientId nullable; // len kvoli lepsej prehladnosti, inak byt nemusi
+              - @Instrument instrument;
+              String instrumentName;  // len kvoli lepsej prehladnosti, inak byt nemusi
+              double piecesOnAccount;
+              double averagePrice;
+
+              Repository SecuritiesRepository {
+                  findByCondition;
+              }
+        }
+
+        Entity Instrument {
+              scaffold
+              String name;
+              String isinNumber key changeable;
+              - @InstrumentType typeOfInstrument;
+              - @Currency currency;
+              double marketPrice;
+              double marketFee; // poplatok v %, ktory sa plati trhu, burze, krajine
+
+              Repository InstrumentRepository {
+                  findByCondition;
+              }
+        }
+
+        enum Currency {
+             EUR, USD, GBP;
+        }
+
+        enum InstrumentType {
+              equity, bond, fund;
+        }
+
+        Entity Money {
+             scaffold
+             - @Account account <-> cashes cascade="persist,merge";
+             String clientId nullable; // len kvoli lepsej prehladnosti, inak byt nemusi
+             - @Currency currency;
+             double balance;
+
+             Repository MoneyRepository {
+                  findByCondition;
+             }
+        }
+
+        Entity ExchangeRate {
+             scaffold
+             - @Currency currencyOne;
+             - @Currency currencyTwo;
+             double exchangeRate;
+
+             Repository ExchangeRateRepository {
+                findByCondition;
+             }
+        }
+
+        Entity SecuritiesTransaction {
+              scaffold
+              - @Account account <-> transactions cascade="persist,merge";
+              String clientId nullable; // Tento field len preto, aby som mohol nacitat data o Account aj podla clientId=idNumber
+              Date dateOfTransaction;
+              String instrumentName; // Tento field len preto, aby som mohol nacitat data o Instrument aj podla instrumentName=name
+              - @Instrument instrument;
+              - @SecurTransType typeOfTransaction;
+              double piecesOfInstrument;
+              double unitPrice;
+              double transactionFee;
+              double balance;
+              String transactionNumber;
+
+              Repository SecuritiesTransactionRepository {
+                   findByCondition;
+              }
+        }
+
+        enum SecurTransType {
+             purchase, sale;
+        }
+
+        Entity MoneyTransaction {
+             scaffold
+             - @Account account <-> movements cascade="persist,merge";
+             String clientId nullable; // Tento field len preto, aby som mohol nacitat data o Account aj podla clientId=idNumber
+             Date dateOfTransaction;
+             - @CashTransType typeOfTransaction;
+             String comment;
+             double amount;
+             - @Currency currency;
+             double balance;
+             String transactionNumber;
+
+            Repository MoneyTransactionRepository {
+                findByCondition;
+            }
+       }
+
+       Entity ForexTransaction {
+             scaffold
+             - @Account account <-> fxFlows cascade="persist,merge";
+             String clientId nullable; // Tento field len preto, aby som mohol nacitat data o Account aj podla clientId=idNumber
+             Date dateOfTransaction;
+             double amountSold;
+             - @Currency currencySold;
+             double amountPurchased;
+             - @Currency currencyPurchased;
+             double fxRate;
+             double marginPaid;
+             String transactionNumber;
+
+             Repository ForexTransactionRepository {
+                 findByCondition;
+             }
+       }
+
+       enum CashTransType {
+            cashDebit, cashCredit, fxDebit, fxCredit, stockDebit, stockCredit;
+       }
+
+       Entity Statement {
+             scaffold
+             String clientId nullable; // najdenie klienta clientId=idNumber v beane Account
+             Date startDate;
+             Date endDate;
+
+             Repository StatementRepository {
+                  findByCondition;
+             }
+       }
+
+
+        Service AccountService {
+            findByCondition => AccountRepository.findByCondition;
+        }
+
+        Service SecuritiesService {
+            findByCondition => SecuritiesRepository.findByCondition;
+        }
+
+        Service InstrumentService {
+        // Nastavenie (aktualizacia) trhovych cien po skonceni denneho obchodovania
+        // (alternativa viackrat denne, resp on-line)
+        updateMarketPrices();
+
+        findByCondition => InstrumentRepository.findByCondition;
+        }
+
+        Service MoneyService {
+            findByCondition => MoneyRepository.findByCondition;
+        }
+
+        Service ExchangeRateService {
+        // Nastavenie (aktualizacia) vymennych kurzov pre jednotlive menove pary
+        // (po skonceni denneho obchodovania, alternativne viackrat denne, resp on-line)
+        updateExchangeRates();
+
+        findByCondition => ExchangeRateRepository.findByCondition;
+        }
+
+        Service SecuritiesTransactionService {
+        // Nakup alebo predaj prislusneho instrumentu.
+        // Pri nakupe kontrola, ci je na ucte dost cashu vratane fee. Klient ma ucty pre kazdu menu oddelene,
+        // ale viem pouzit jednu menu na nakup instrumentu v inej mene.
+        // Pri predaji kontrola, ci mam na ucte dost CP daneho druhu.
+        // Aktualizacia uctu CP ako aj cashoveho uctu.
+        @SecuritiesTransaction makeSecuritiesTransaction(@Account account, @Instrument instrument,
+                            @SecurTransType typeOfTransaction, double piecesOfInstrument, double unitPrice);
+
+        // To iste, ako vyssie, len clienta a instrument nenacitam cez ich ID z databazy, ale cez
+        // clientID = idNumber v beane Account, resp.  instrumentName = name v beane Instrument
+        // (takto viem obist nutnost poznat id z databazy).
+        @SecuritiesTransaction makeSecuritiesTransactionByClientId(String clientId, String instrumentName,
+                            @SecurTransType typeOfTransaction, double piecesOfInstrument, double unitPrice);
+
+        // vypocet poplatku za transakciu na zaklade instrumentu a velkosti transakcie
+        double calculateTransactionFee(@Instrument instrument, double sizeOfTransaction);
+
+        findByCondition => SecuritiesTransactionRepository.findByCondition;
+        }
+
+        Service MoneyTransactionService {
+        // Credit alebo debet uctu pre prislusnu menu.
+        // Pre debete kontrola, ci je na ucte dost cashu. Ak nie, tak vyhodi exception.
+        // Vyrobit novu transakciu
+        @MoneyTransaction makeMoneyTransaction(@Account account, @CashTransType typeOfTransaction,
+                             double amount, @Currency currency);
+
+        // To iste, ako vyssie, len clienta nenacitam cez jeho ID z databazy, ale cez jeho clientID,
+        // ktore sa rovna idNumber v beane Account (takto viem obist nutnost poznat id z databazy).
+        @MoneyTransaction makeMoneyTransactionByClientId(String clientId, @CashTransType typeOfTransaction,
+                                     double amount, @Currency currency);
+
+        findByCondition => MoneyTransactionRepository.findByCondition;
+        }
+
+        Service ForexTransactionService {
+        // Menova konverzia z meny currencySale v objeme amount do meny currencyPurchase
+        @ForexTransaction makeForexTransaction(@Account account, double amountSold,
+                                  @Currency currencySold, @Currency currencyPurchased);
+
+        // To iste, ako vyssie, len clienta nenacitam cez jeho ID z databazy, ale cez jeho clientID,
+        // ktore sa rovna idNumber v beane Account (takto viem obist nutnost poznat id z databazy).
+        @ForexTransaction makeForexTransactionByClientId(String clientId, double amountSold,
+                                  @Currency currencySold, @Currency currencyPurchased);
+
+        // vypocet marze pri FX transakcii
+        double calculateFxMargin(double sizeOfTransaction, @Currency currencySold, @Currency currencyPurchased);
+
+        findByCondition => MoneyTransactionRepository.findByCondition;
+        }
+
+        Service StatementService {
+
+        // Portfolio klienta. Klienta najdem podla jeho clientId
+        @Account showClientPortfolio(String clientId);
+
+        // Vsetky transakcie klienta. Klienta najdem podla jeho clientId
+        @Account showAllClientTransactions(String clientId);
+
+        // Transakcie klienta za casove obdobie. Klienta najdem podla jeho clientId
+        @Account showClientTransactionsbByDates(String clientId, Date startDate, Date endDate);
+
+        findByCondition => StatementRepository.findByCondition;
+        }
+
+    }
+}
