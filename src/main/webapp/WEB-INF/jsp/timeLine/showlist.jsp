@@ -10,6 +10,8 @@
 		<th>Id</th>
 		<th>Date</th>
 		<th>Label</th>
+		<th>User</th>
+		<th>Task</th>
 		<th/>
 		<th/>
 		</thead>
@@ -24,6 +26,12 @@
 				<td>
 					${each.label}
 				</td>
+				<td>
+                	${each.useer.name}
+                </td>
+                <td>
+                   	${each.task.name}
+                </td>
 				<td>
 					<a href="<c:url value="/rest/timeLine/${each.id}" />">Show</a>
 				</td>

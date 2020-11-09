@@ -13,7 +13,7 @@
 		</div>
 		<br/>
 		<div id="project_launchDate">
-			<label for="_launchDate">LaunchDate:</label>
+			<label for="_launchDate">Launch Date:</label>
 			<div class="box" id="_launchDate">${result.launchDate}</div>
 		</div>
 		<br/>

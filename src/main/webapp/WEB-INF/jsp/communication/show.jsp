@@ -2,19 +2,19 @@
 <jsp:directive.include file="/WEB-INF/jsp/header.jsp"/>
 <div>
 	<c:if test="${not empty result}">
-		<div id="communication_nameOfTask">
-           	<label for="_task.nameOfTask">Task:</label>
-           	<div class="box" id="_task.nameOfTask">${result.task.nameOfTask}</div>
+		<div id="communication_task.name">
+           	<label for="_task.name">Task:</label>
+           	<div class="box" id="_task.name">${result.task.name}</div>
         </div>
         <br/>
-        <div id="communication_sender">
-        	<label for="_sender">Sender:</label>
-        	<div class="box" id="_sender">${result.sender}</div>
+        <div id="communication_sender.name">
+        	<label for="_sender.name">Sender:</label>
+        	<div class="box" id="_sender.name">${result.sender.name}</div>
         </div>
         <br/>
-        <div id="communication_recipient">
-        	<label for="_recipient">Recipient:</label>
-        	<div class="box" id="_recipient">${result.recipient}</div>
+        <div id="communication_recipient.name">
+        	<label for="_recipient.name">Recipient:</label>
+        	<div class="box" id="_recipient.name">${result.recipient.name}</div>
         </div>
         <br/>
 		<div id="communication_content">
@@ -22,9 +22,9 @@
 			<div class="box" id="_content">${result.content}</div>
 		</div>
 		<br/>
-		<div id="communication_dateOfCommunication">
-			<label for="_dateOfCommunication">Date:</label>
-			<div class="box" id="_dateOfCommunication">${result.dateOfCommunication}</div>
+		<div id="communication_date">
+			<label for="_date">Date:</label>
+			<div class="box" id="_date">${result.date}</div>
 		</div>
 		<br/>
 	</c:if>

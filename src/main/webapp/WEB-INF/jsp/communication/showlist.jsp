@@ -22,19 +22,19 @@
 					<a href="<c:url value="/rest/communication/${each.id}" />">${each.id}</a>
 				</td>
 				<td>
-                   ${each.task.nameOfTask}
+                   ${each.task.name}
                 </td>
 				<td>
-					${each.sender}
+					${each.sender.name}
 				</td>
 				<td>
-                	${each.recipient}
+                	${each.recipient.name}
                 </td>
                 <td>
                     ${each.content}
                 </td>
 				<td>
-					${each.dateOfCommunication}
+					${each.date}
 				</td>
 				<td>
 					<a href="<c:url value="/rest/communication/${each.id}" />">Show</a>

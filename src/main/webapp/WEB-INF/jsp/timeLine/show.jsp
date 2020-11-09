@@ -12,6 +12,16 @@
 			<div class="box" id="_label">${result.label}</div>
 		</div>
 		<br/>
+		<div id="timeLine_useer.name">
+           	<label for="_useer.name">User:</label>
+           	<div class="box" id="_useer.name">${result.useer.name}</div>
+        </div>
+        <br/>
+		<div id="timeLine_task.name">
+        	<label for="_task.name">Task:</label>
+        	<div class="box" id="_task.name">${result.task.name}</div>
+        </div>
+		<br/>
 	</c:if>
 	<c:if test="${empty result}">No TimeLine found with this id.</c:if>
 </div>

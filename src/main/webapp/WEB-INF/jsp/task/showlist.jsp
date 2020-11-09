@@ -9,13 +9,13 @@
 		<thead>
 		<th>Id</th>
 		<th>Project</th>
-		<th>Task name</th>
+		<th>Task</th>
 		<th>Description</th>
 		<th>Type</th>
 		<th>Origin date</th>
 		<th>Priority</th>
 		<th>Deadline</th>
-		<th>State</th>
+		<th>Status</th>
 		<th/>
 		<th/>
 		</thead>
@@ -25,28 +25,28 @@
 					<a href="<c:url value="/rest/task/${each.id}" />">${each.id}</a>
 				</td>
 				<td>
-                    ${each.project.nameOfProject}
+                    ${each.project.name}
                 </td>
 				<td>
-					${each.nameOfTask}
+					${each.name}
 				</td>
 				<td>
 					${each.description}
 				</td>
 				<td>
-                	${each.typeOfTask}
+                	${each.taskType}
                 </td>
 				<td>
-					${each.dateOfOrigin}
+					${each.originDate}
 				</td>
 				<td>
-                	${each.taskPriority}
+                	${each.priority}
                 </td>
 				<td>
 					${each.deadline}
 				</td>
 				<td>
-                	${each.state}
+                	${each.status}
                 </td>
 				<td>
 					<a href="<c:url value="/rest/task/${each.id}" />">Show</a>

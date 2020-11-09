@@ -4,11 +4,11 @@
 	<h2>New Project</h2>
 	<c:url value="/rest/project" var="action"/>
 	<form:form action="${action}" method="POST" modelAttribute="entity">
-	<div id="project_nameOfProject">
-		<label for="_nameOfProject">NameOfProject:</label>
-		<form:input cssStyle="width:300px" id="_nameOfProject" path="nameOfProject"/>
+	<div id="project_name">
+		<label for="_name">Name:</label>
+		<form:input cssStyle="width:300px" id="_name" path="name"/>
 		<br/>
-		<form:errors cssClass="errors" id="_nameOfProject" path="nameOfProject"/>
+		<form:errors cssClass="errors" id="_name" path="name"/>
 	</div>
 	<div id="project_description">
 		<label for="_description">Description:</label>

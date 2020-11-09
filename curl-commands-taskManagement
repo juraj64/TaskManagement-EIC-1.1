@@ -31,54 +31,62 @@ Entity Task {
            - List<@TimeLine> timeLines <-> task inverse;  // casovy sled udalosti s taskom
            - @Environment placement; // v akom prostredi je task
 
-curl -i -H "Content-Type: application/json" -X POST -d "{\"project\": {\"id\": 2}, \"name\": \"uprava cash reportu\", \"description\": \"Upravit cash report tak, aby polozka clientId sa zmenila na customerId\", \"taskType\": \"NewFunction\", \"priority\": \High\", \"deadline\": \"2020-11-13\", \"status\": \"Returned\", \"placement\": \"DEV\"}" http://localhost:8888/rest/task
+curl -i -H "Content-Type: application/json" -X POST -d "{\"project\": {\"id\": 2}, \"name\": \"uprava cash reportu\", \"description\": \"Upravit cash report tak, aby polozka clientId sa zmenila na customerId\", \"taskType\": \"NewFunction\", \"priority\": \"High\", \"deadline\": \"2020-11-13\", \"status\": \"Returned\", \"placement\": \"DEV\"}" http://localhost:8888/rest/task
 
+curl -i -H "Content-Type: application/json" -X POST -d "{\"project\": {\"id\": 2}, \"name\": \"nespravne zaokruhlovanie\", \"description\": \"Pri zavierke nespravne zaokruhli pocty kupenych CP\", \"taskType\": \"Bug\", \"priority\": \"Urgent\", \"deadline\": \"2020-11-10\", \"status\": \"Created\", \"placement\": \"TEST\"}" http://localhost:8888/rest/task
 
+curl -i -H "Content-Type: application/json" -X POST -d "{\"project\": {\"id\": 2}, \"name\": \"doplnit akcie\", \"description\": \"Rozsirit funkcionalitu o nakup a predaj akciovych titulov\", \"taskType\": \"NewFunction\", \"priority\": \"Medium\", \"deadline\": \"2021-02-28\", \"status\": \"Accepted\", \"placement\": \"DEV\"}" http://localhost:8888/rest/task
 
+curl -i -H "Content-Type: application/json" -X POST -d "{\"project\": {\"id\": 2}, \"name\": \"automatizacia FX prevodov\", \"description\": \"Pri nakupe CP urobit automaticky menovy prevod, ak je potrebne a su ine meny k dispozicii\", \"taskType\": \"NewFunction\", \"priority\": \"Low\", \"deadline\": \"2021-04-30\", \"status\": \"Created\", \"placement\": \"DEV\"}" http://localhost:8888/rest/task
 
+enum Type {
+           NewFunction, ChangeRequest, Bug, Other;
+        }
 
-curl -i -H "Content-Type: application/json" -X POST -d "{\"project\": {\"id\": 1}, \"nameOfTask\":\"nespravne zaokruhlovanie\", \"description\":\"Pri zavierke nespravne zaokruhli pocty kupenych CP\", \"typeOfTask\":\"bug\", \"taskPriority\":\"urgent\", \"deadline\":\"2020-11-05\", \"state\":\"acceptedByVendor\"}" http://localhost:8888/rest/task
+        enum Priority {
+           Urgent, High, Medium, Low;
+        }
 
-curl -i -H "Content-Type: application/json" -X POST -d "{\"project\": {\"id\": 1}, \"nameOfTask\":\"doplnit akcie\", \"description\":\"Rozsirit funkcionalitu o nakup a predaj akciovych titulov\", \"typeOfTask\":\"newFunction\", \"taskPriority\":\"medium\", \"deadline\":\"2021-03-31\", \"state\":\"requiredByClient\"}" http://localhost:8888/rest/task
-
-curl -i -H "Content-Type: application/json" -X POST -d "{\"project\": {\"id\": 1}, \"nameOfTask\":\"automatizacia FX prevodov\", \"description\":\"Pri nakupe CP urobit automaticky menovy prevod, ak je potrebne a su ine meny k dispozicii\", \"typeOfTask\":\"newFunction\", \"taskPriority\":\"low\", \"deadline\":\"2021-03-31\", \"state\":\"requiredByClient\"}}" http://localhost:8888/rest/task
-
+        enum TaskStatus {
+             Created,  // ked klient vytvori novy incident
+             Returned, // ked klient vrati zo stavu resolved v prostredi TEST alebo RUT
+             Accepted, // developer nastavi ked zacne na nom pracovat na DEV prostredi
+             Resolved  // developer nastavi ked ho na DEV prostredi vyriesi
+        }
 
 Entity Communication {
             scaffold
-            -@Task task <-> communications cascade="persist,merge";  // k akemu tasku patri
-            - @Person sender;
-            - @Person recipient;
+            - @Task task <-> communications cascade="persist,merge";  // k akemu tasku patri
+            - @Useer sender;
+            - @Useer recipient;
             String content;    // vlastna komunikacia
-            Date dateOfCommunication; // v den zapisu do systemu, vygeneruje sa automaticky
+            Date date; // v den zapisu do systemu, vygeneruje sa automaticky         
+                        
 
-curl -i -H "Content-Type: application/json" -X POST -d "{\"task\": {\"id\": 2}, \"sender\":\"Client\", \"recipient\":\"Vendor\", \"content\":\"Poslal som ti nove doplnenie. Pls. pozri na to a daj obratom vediet\"}" http://localhost:8888/rest/communication
+curl -i -H "Content-Type: application/json" -X POST -d "{\"task\": {\"id\": 4}, \"sender\":{\"id\": 8}, \"recipient\":{\"id\": 10}, \"content\":\"Poslal som ti nove doplnenie. Pls. pozri na to a daj obratom vediet\"}" http://localhost:8888/rest/communication
 
-curl -i -H "Content-Type: application/json" -X POST -d "{\"task\": {\"id\": 2}, \"sender\":\"Vendor\", \"recipient\":\"Client\", \"content\":\"OK, zajtra.\"}" http://localhost:8888/rest/communication
+curl -i -H "Content-Type: application/json" -X POST -d "{\"task\": {\"id\": 4}, \"sender\":{\"id\": 10}, \"recipient\":{\"id\": 8}, \"content\":\"OK, zajtra.\"}" http://localhost:8888/rest/communication
 
-curl -i -H "Content-Type: application/json" -X POST -d "{\"task\": {\"id\": 2}, \"sender\":\"Client\", \"recipient\":\"Vendor\", \"content\":\"Videl si to uz? Je to fakt urgent\"}" http://localhost:8888/rest/communication
+curl -i -H "Content-Type: application/json" -X POST -d "{\"task\": {\"id\": 4}, \"sender\":{\"id\": 8}, \"recipient\":{\"id\": 10}, \"content\":\"Videl si to uz? Je to fakt urgent\"}" http://localhost:8888/rest/communication
 
-curl -i -H "Content-Type: application/json" -X POST -d "{\"task\": {\"id\": 2}, \"sender\":\"Vendor\", \"recipient\":\"Client\", \"content\":\"Dnes som to pozrel. Do tyzdna by to mohlo byt. Dam vediet.\"}" http://localhost:8888/rest/communication
+curl -i -H "Content-Type: application/json" -X POST -d "{\"task\": {\"id\": 4}, \"sender\":{\"id\": 10}, \"recipient\":{\"id\": 8}, \"content\":\"Dnes som to pozrel. Do tyzdna by to mohlo byt. Dam vediet.\"}" http://localhost:8888/rest/communication
 
-curl -i -H "Content-Type: application/json" -X POST -d "{\"task\": {\"id\": 3}, \"sender\":\"Client\", \"recipient\":\"Vendor\", \"content\":\"Zle to zaokruhluje. Treba opravit\"}" http://localhost:8888/rest/communication
+curl -i -H "Content-Type: application/json" -X POST -d "{\"task\": {\"id\": 5}, \"sender\":{\"id\": 11}, \"recipient\":{\"id\": 9}, \"content\":\"Zle to zaokruhluje. Treba opravit\"}" http://localhost:8888/rest/communication
 
-curl -i -H "Content-Type: application/json" -X POST -d "{\"task\": {\"id\": 3}, \"sender\":\"Vendor\", \"recipient\":\"Client\", \"content\":\"Kde? Pls. ukaz\"}" http://localhost:8888/rest/communication
+curl -i -H "Content-Type: application/json" -X POST -d "{\"task\": {\"id\": 5}, \"sender\":{\"id\": 9}, \"recipient\":{\"id\": 11}, \"content\":\"Kde? Pls. ukaz\"}" http://localhost:8888/rest/communication
 
-curl -i -H "Content-Type: application/json" -X POST -d "{\"task\": {\"id\": 3}, \"sender\":\"Client\", \"recipient\":\"Vendor\", \"content\":\"Poslal som ti v prilohe\"}" http://localhost:8888/rest/communication
+curl -i -H "Content-Type: application/json" -X POST -d "{\"task\": {\"id\": 5}, \"sender\":{\"id\": 11}, \"recipient\":{\"id\": 9}, \"content\":\"Poslala som v prilohe\"}" http://localhost:8888/rest/communication
 
-curl -i -H "Content-Type: application/json" -X POST -d "{\"task\": {\"id\": 3}, \"sender\":\"Vendor\", \"recipient\":\"Client\", \"content\":\"Aha, jasne. Pozriem na to. Tak do tyzdna\"}" http://localhost:8888/rest/communication
+curl -i -H "Content-Type: application/json" -X POST -d "{\"task\": {\"id\": 5}, \"sender\":{\"id\": 8}, \"recipient\":{\"id\": 11}, \"content\":\"Aha, jasne. Pozrieme na to. Tak do dvoch tyzdnov\"}" http://localhost:8888/rest/communication
 
-
-SERVICES
-@Task changeTaskParameters(@Task task, @Priority newPriority, Date newDeadline, @CompletionState newState);
-
-curl -i -H "Content-Type: application/json" -X POST -d "{\"nameOfTask\":\"doplnit akcie\", \"taskPriority\":\"high\", \"deadline\":\"2020-02-14\", \"state\":\"acceptedByVendor\"}" http://localhost:8888/rest/task/changeparameters
-
-curl -i -H "Content-Type: application/json" -X POST -d "{\"nameOfTask\":\"doplnit akcie\", \"taskPriority\":\"high\", \"deadline\":\"2020-52-52\"state\":\"acceptedByVendor\"}" http://localhost:8888/rest/task/changeparameters
-
-List<@Communication> orderCommunicationsByTask(@Task task);
-curl -i -H "Content-Type: application/json" -X POST -d "{\"task\": {\"id\": 3}}" http://localhost:8888/rest/communication/bytask
-curl -i -H "Content-Type: application/json" -X POST -d "{\"task\": {\"id\": 2}}" http://localhost:8888/rest/communication/bytask
+Entity TimeLine {
+            scaffold
+            Date date;
+            String label; // kombinacia TaskStatus a Environment. Automaticky alebo aj rucne?
+            - @Useer useer;
+            - @Task task <-> timeLines cascade="persist,merge";  // k akemu tasku patri
+            
+curl -i -H "Content-Type: application/json" -X POST -d "{\"date\": \"2020-11-05\", \"label\": \"2020-11-05 created\", \"useer\":{\"id\": 8}, \"task\": {\"id\": 5}}" http://localhost:8888/rest/timeline            
 
 
 

@@ -2,14 +2,14 @@
 <jsp:directive.include file="/WEB-INF/jsp/header.jsp"/>
 <div>
 	<c:if test="${not empty result}">
-		<div id="task_nameOfProject">
-           	<label for="_project.nameOfProject">Project:</label>
-           	<div class="box" id="_project.nameOfProject">${result.project.nameOfProject}</div>
+		<div id="task_project.name">
+           	<label for="_project.name">Project:</label>
+           	<div class="box" id="_project.name">${result.project.name}</div>
         </div>
         <br/>
-		<div id="task_nameOfTask">
-			<label for="_nameOfTask">Task name:</label>
-			<div class="box" id="_nameOfTask">${result.nameOfTask}</div>
+		<div id="task_name">
+			<label for="_name">Task:</label>
+			<div class="box" id="_name">${result.name}</div>
 		</div>
 		<br/>
 		<div id="task_description">
@@ -17,19 +17,19 @@
 			<div class="box" id="_description">${result.description}</div>
 		</div>
 		<br/>
-		<div id="task_typeOfTask">
-    		<label for="_typeOfTask">Type:</label>
-    		<div class="box" id="_typeOfTask">${result.typeOfTask}</div>
+		<div id="task_taskType">
+    		<label for="_taskType">Type:</label>
+    		<div class="box" id="_taskType">${result.taskType}</div>
       	</div>
     	<br/>
-		<div id="task_dateOfOrigin">
-			<label for="_dateOfOrigin">Origin date:</label>
-			<div class="box" id="_dateOfOrigin">${result.dateOfOrigin}</div>
+		<div id="task_originDate">
+			<label for="_originDate">Origin date:</label>
+			<div class="box" id="_originDate">${result.originDate}</div>
 		</div>
 		<br/>
-		<div id="task_taskPriority">
-        	<label for="_taskPriority">Priority:</label>
-        	<div class="box" id="_taskPriority">${result.taskPriority}</div>
+		<div id="task_priority">
+        	<label for="_priority">Priority:</label>
+        	<div class="box" id="_priority">${result.priority}</div>
         </div>
 		<br/>
 		<div id="task_deadline">
@@ -37,9 +37,9 @@
 			<div class="box" id="_deadline">${result.deadline}</div>
 		</div>
 		<br/>
-		<div id="task_state">
-    		<label for="_state">State:</label>
-    		<div class="box" id="_state">${result.state}</div>
+		<div id="task_status">
+    		<label for="_status">Status:</label>
+    		<div class="box" id="_status">${result.status}</div>
     	</div>
     	<br/>
 	</c:if>

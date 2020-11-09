@@ -10,7 +10,7 @@
 		<th>Id</th>
 		<th>Name</th>
 		<th>Description</th>
-		<th>LaunchDate</th>
+		<th>Launch Date</th>
 		<th/>
 		<th/>
 		</thead>
