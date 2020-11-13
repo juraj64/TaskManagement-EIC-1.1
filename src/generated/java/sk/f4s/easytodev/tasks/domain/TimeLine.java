@@ -23,8 +23,8 @@ import org.sculptor.framework.domain.AbstractDomainObject;
 import org.sculptor.framework.domain.AuditListener;
 import org.sculptor.framework.domain.Auditable;
 import org.sculptor.framework.domain.Identifiable;
+import sk.f4s.easytodev.tasks.domain.EndUser;
 import sk.f4s.easytodev.tasks.domain.Task;
-import sk.f4s.easytodev.tasks.domain.Useer;
 
 /**
  * Entity representing TimeLine.
@@ -65,10 +65,10 @@ public class TimeLine extends AbstractDomainObject implements Auditable, Identif
 	private Long version;
 
 	@ManyToOne(optional = false, cascade = CascadeType.ALL)
-	@JoinColumn(name = "USEER", nullable = false)
-	@ForeignKey(name = "FK_TIMELINE_USEER")
+	@JoinColumn(name = "PERSON", nullable = false)
+	@ForeignKey(name = "FK_TIMELINE_PERSON")
 	@NotNull
-	private Useer useer;
+	private EndUser person;
 	@ManyToOne(optional = false, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "TASK", nullable = false)
 	@ForeignKey(name = "FK_TIMELINE_TASK")
@@ -167,12 +167,12 @@ public class TimeLine extends AbstractDomainObject implements Auditable, Identif
 		return uuid;
 	}
 
-	public Useer getUseer() {
-		return useer;
+	public EndUser getPerson() {
+		return person;
 	}
 
-	public void setUseer(Useer useer) {
-		this.useer = useer;
+	public void setPerson(EndUser person) {
+		this.person = person;
 	}
 
 	public Task getTask() {

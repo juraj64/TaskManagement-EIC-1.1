@@ -5,10 +5,10 @@
 	<c:url value="/rest/task" var="action"/>
 	<form:form action="${action}" method="POST" modelAttribute="entity">
 	<div id="task_projectId">
-       	<label for="_project.id">Project:</label>
-       	<form:input cssStyle="width:300px" id="_project.id" path="project.id"/>
+       	<label for="_projectId">Project ID:</label>
+       	<form:input cssStyle="width:300px" id="_projectId" path="projectId"/>
        	<br/>
-       	<form:errors cssClass="errors" id="_project.id" path="project.id"/>
+       	<form:errors cssClass="errors" id="_projectId" path="projectId"/>
     </div>
 	<div id="task_name">
 		<label for="_name">Task:</label>
@@ -45,6 +45,12 @@
        	<form:input cssStyle="width:300px" id="_status" path="status"/>
        	<br/>
         <form:errors cssClass="errors" id="_status" path="status"/>
+    </div>
+    <div id="task_placement">
+       	<label for="_placement">Environment:</label>
+       	<form:input cssStyle="width:300px" id="_placement" path="placement"/>
+       	<br/>
+        <form:errors cssClass="errors" id="_placement" path="placement"/>
     </div>
 	<div class="submit" id="task_submit">
 		<input id="proceed" type="submit" value="Save"/>

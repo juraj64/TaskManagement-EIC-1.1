@@ -23,8 +23,8 @@ import org.sculptor.framework.domain.AbstractDomainObject;
 import org.sculptor.framework.domain.AuditListener;
 import org.sculptor.framework.domain.Auditable;
 import org.sculptor.framework.domain.Identifiable;
+import sk.f4s.easytodev.tasks.domain.EndUser;
 import sk.f4s.easytodev.tasks.domain.Task;
-import sk.f4s.easytodev.tasks.domain.Useer;
 
 /**
  * Entity representing Communication.
@@ -41,6 +41,15 @@ public class Communication extends AbstractDomainObject implements Auditable, Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID")
 	private Long id;
+	@Column(name = "TASKID", nullable = false)
+	@NotNull
+	private Long taskId;
+	@Column(name = "SENDERNAME", nullable = false, length = 100)
+	@NotNull
+	private String senderName;
+	@Column(name = "RECIPIENTNAME", nullable = false, length = 100)
+	@NotNull
+	private String recipientName;
 	@Column(name = "CONTENT", nullable = false, length = 100)
 	@NotNull
 	private String content;
@@ -69,16 +78,16 @@ public class Communication extends AbstractDomainObject implements Auditable, Id
 	@ForeignKey(name = "FK_COMMUNICATION_TASK")
 	@NotNull
 	private Task task;
-	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@ManyToOne(optional = false, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "SENDER", nullable = false)
 	@ForeignKey(name = "FK_COMMUNICATION_SENDER")
 	@NotNull
-	private Useer sender;
-	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	private EndUser sender;
+	@ManyToOne(optional = false, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "RECIPIENT", nullable = false)
 	@ForeignKey(name = "FK_COMMUNICATION_RECIPIENT")
 	@NotNull
-	private Useer recipient;
+	private EndUser recipient;
 
 	public Communication() {
 	}
@@ -95,6 +104,33 @@ public class Communication extends AbstractDomainObject implements Auditable, Id
 			throw new IllegalArgumentException("Not allowed to change the id property.");
 		}
 		this.id = id;
+	}
+
+	public Long getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(Long taskId) {
+		this.taskId = taskId;
+
+	}
+
+	public String getSenderName() {
+		return senderName;
+	}
+
+	public void setSenderName(String senderName) {
+		this.senderName = senderName;
+
+	}
+
+	public String getRecipientName() {
+		return recipientName;
+	}
+
+	public void setRecipientName(String recipientName) {
+		this.recipientName = recipientName;
+
 	}
 
 	public String getContent() {
@@ -180,19 +216,19 @@ public class Communication extends AbstractDomainObject implements Auditable, Id
 		this.task = task;
 	}
 
-	public Useer getSender() {
+	public EndUser getSender() {
 		return sender;
 	}
 
-	public void setSender(Useer sender) {
+	public void setSender(EndUser sender) {
 		this.sender = sender;
 	}
 
-	public Useer getRecipient() {
+	public EndUser getRecipient() {
 		return recipient;
 	}
 
-	public void setRecipient(Useer recipient) {
+	public void setRecipient(EndUser recipient) {
 		this.recipient = recipient;
 	}
 

@@ -4,9 +4,9 @@ sk/f4s/easytodev/tasks/serviceapi/TaskServiceTest.class
 sk/f4s/easytodev/tasks/serviceapi/ProjectServiceTestBase.class
 sk/f4s/easytodev/tasks/serviceapi/CommunicationServiceTestBase.class
 sk/f4s/easytodev/tasks/serviceapi/TimeLineServiceTest.class
-sk/f4s/easytodev/tasks/serviceapi/UseerServiceTestBase.class
 sk/f4s/easytodev/tasks/serviceapi/DeploymentServiceTestBase.class
 sk/f4s/easytodev/tasks/serviceapi/ProjectServiceTest.class
+sk/f4s/easytodev/tasks/serviceapi/EndUserServiceTest.class
 sk/f4s/easytodev/tasks/serviceapi/TaskServiceTestBase.class
 sk/f4s/easytodev/tasks/serviceapi/TimeLineServiceTestBase.class
-sk/f4s/easytodev/tasks/serviceapi/UseerServiceTest.class
+sk/f4s/easytodev/tasks/serviceapi/EndUserServiceTestBase.class

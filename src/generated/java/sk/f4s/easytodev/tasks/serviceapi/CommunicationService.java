@@ -4,6 +4,7 @@ import java.util.List;
 import org.sculptor.framework.accessapi.ConditionalCriteria;
 import org.sculptor.framework.context.ServiceContext;
 import sk.f4s.easytodev.tasks.domain.Communication;
+import sk.f4s.easytodev.tasks.domain.Task;
 import sk.f4s.easytodev.tasks.exception.CommunicationNotFoundException;
 
 /**
@@ -12,6 +13,18 @@ import sk.f4s.easytodev.tasks.exception.CommunicationNotFoundException;
 public interface CommunicationService {
 
 	public final static String BEAN_ID = "communicationService";
+
+	public List<Communication> orderByDateDesc(ServiceContext ctx);
+
+	public List<Communication> orderByDateAsc(ServiceContext ctx);
+
+	public List<Communication> orderByTask(ServiceContext ctx);
+
+	public List<Communication> orderByTaskDesc(ServiceContext ctx);
+
+	public List<Communication> showByTaskDesc(ServiceContext ctx, Task task);
+
+	public List<Communication> showByTaskAsc(ServiceContext ctx, Task task);
 
 	public List<Communication> findByCondition(ServiceContext ctx, List<ConditionalCriteria> condition);
 

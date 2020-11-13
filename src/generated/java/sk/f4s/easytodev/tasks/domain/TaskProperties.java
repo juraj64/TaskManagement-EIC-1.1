@@ -26,6 +26,10 @@ public class TaskProperties {
 		return sharedInstance.id();
 	}
 
+	public static Property<Task> projectId() {
+		return sharedInstance.projectId();
+	}
+
 	public static Property<Task> name() {
 		return sharedInstance.name();
 	}
@@ -121,6 +125,10 @@ public class TaskProperties {
 
 		public Property<T> id() {
 			return new LeafProperty<T>(getParentPath(), "id", false, owningClass);
+		}
+
+		public Property<T> projectId() {
+			return new LeafProperty<T>(getParentPath(), "projectId", false, owningClass);
 		}
 
 		public Property<T> name() {

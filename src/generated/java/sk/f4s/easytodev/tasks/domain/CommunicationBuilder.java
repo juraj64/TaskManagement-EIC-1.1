@@ -2,14 +2,17 @@ package sk.f4s.easytodev.tasks.domain;
 
 import java.util.Date;
 import sk.f4s.easytodev.tasks.domain.Communication;
+import sk.f4s.easytodev.tasks.domain.EndUser;
 import sk.f4s.easytodev.tasks.domain.Task;
-import sk.f4s.easytodev.tasks.domain.Useer;
 
 /**
  * Builder for Communication class.
  */
 public class CommunicationBuilder {
 
+	private Long taskId;
+	private String senderName;
+	private String recipientName;
 	private String content;
 	private Date date;
 	private Date createdDate;
@@ -18,8 +21,8 @@ public class CommunicationBuilder {
 	private String lastUpdatedBy;
 
 	private Task task;
-	private Useer sender;
-	private Useer recipient;
+	private EndUser sender;
+	private EndUser recipient;
 
 	/**
 	 * Static factory method for CommunicationBuilder
@@ -29,6 +32,21 @@ public class CommunicationBuilder {
 	}
 
 	public CommunicationBuilder() {
+	}
+
+	public CommunicationBuilder taskId(Long val) {
+		this.taskId = val;
+		return this;
+	}
+
+	public CommunicationBuilder senderName(String val) {
+		this.senderName = val;
+		return this;
+	}
+
+	public CommunicationBuilder recipientName(String val) {
+		this.recipientName = val;
+		return this;
 	}
 
 	public CommunicationBuilder content(String val) {
@@ -66,14 +84,26 @@ public class CommunicationBuilder {
 		return this;
 	}
 
-	public CommunicationBuilder sender(Useer sender) {
+	public CommunicationBuilder sender(EndUser sender) {
 		this.sender = sender;
 		return this;
 	}
 
-	public CommunicationBuilder recipient(Useer recipient) {
+	public CommunicationBuilder recipient(EndUser recipient) {
 		this.recipient = recipient;
 		return this;
+	}
+
+	public Long getTaskId() {
+		return taskId;
+	}
+
+	public String getSenderName() {
+		return senderName;
+	}
+
+	public String getRecipientName() {
+		return recipientName;
 	}
 
 	public String getContent() {
@@ -104,11 +134,11 @@ public class CommunicationBuilder {
 		return task;
 	}
 
-	public Useer getSender() {
+	public EndUser getSender() {
 		return sender;
 	}
 
-	public Useer getRecipient() {
+	public EndUser getRecipient() {
 		return recipient;
 	}
 
@@ -117,6 +147,9 @@ public class CommunicationBuilder {
 	 */
 	public Communication build() {
 		Communication obj = new Communication();
+		obj.setTaskId(taskId);
+		obj.setSenderName(senderName);
+		obj.setRecipientName(recipientName);
 		obj.setContent(content);
 		obj.setDate(date);
 		obj.setCreatedDate(createdDate);

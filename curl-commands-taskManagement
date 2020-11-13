@@ -86,7 +86,13 @@ Entity TimeLine {
             - @Useer useer;
             - @Task task <-> timeLines cascade="persist,merge";  // k akemu tasku patri
             
-curl -i -H "Content-Type: application/json" -X POST -d "{\"date\": \"2020-11-05\", \"label\": \"2020-11-05 created\", \"useer\":{\"id\": 8}, \"task\": {\"id\": 5}}" http://localhost:8888/rest/timeline            
+curl -i -H "Content-Type: application/json" -X POST -d "{\"date\": \"2020-11-05\", \"label\": \"2020-11-05 created\", \"useer\":{\"id\": 8}, \"task\": {\"id\": 5}}" http://localhost:8888/rest/timeline 
+
+curl -i -H "Content-Type: application/json" -X POST -d "{\"date\": \"2020-11-06\", \"label\": \"2020-11-06 accepted\", \"useer\":{\"id\": 10}, \"task\": {\"id\": 5}}" http://localhost:8888/rest/timeline 
+
+curl -i -H "Content-Type: application/json" -X POST -d "{\"date\": \"2020-11-09\", \"label\": \"2020-11-09 in process\", \"useer\":{\"id\": 8}, \"task\": {\"id\": 5}}" http://localhost:8888/rest/timeline 
+
+           
 
 
 

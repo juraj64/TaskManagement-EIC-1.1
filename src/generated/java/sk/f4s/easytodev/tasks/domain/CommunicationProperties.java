@@ -4,8 +4,8 @@ import org.sculptor.framework.domain.LeafProperty;
 import org.sculptor.framework.domain.PropertiesCollection;
 import org.sculptor.framework.domain.Property;
 import sk.f4s.easytodev.tasks.domain.Communication;
+import sk.f4s.easytodev.tasks.domain.EndUserProperties.EndUserProperty;
 import sk.f4s.easytodev.tasks.domain.TaskProperties.TaskProperty;
-import sk.f4s.easytodev.tasks.domain.UseerProperties.UseerProperty;
 
 /**
  * This generated interface defines property names for all attributes and associatations in
@@ -24,6 +24,18 @@ public class CommunicationProperties {
 
 	public static Property<Communication> id() {
 		return sharedInstance.id();
+	}
+
+	public static Property<Communication> taskId() {
+		return sharedInstance.taskId();
+	}
+
+	public static Property<Communication> senderName() {
+		return sharedInstance.senderName();
+	}
+
+	public static Property<Communication> recipientName() {
+		return sharedInstance.recipientName();
 	}
 
 	public static Property<Communication> content() {
@@ -62,11 +74,11 @@ public class CommunicationProperties {
 		return sharedInstance.task();
 	}
 
-	public static UseerProperty<Communication> sender() {
+	public static EndUserProperty<Communication> sender() {
 		return sharedInstance.sender();
 	}
 
-	public static UseerProperty<Communication> recipient() {
+	public static EndUserProperty<Communication> recipient() {
 		return sharedInstance.recipient();
 	}
 
@@ -97,6 +109,18 @@ public class CommunicationProperties {
 
 		public Property<T> id() {
 			return new LeafProperty<T>(getParentPath(), "id", false, owningClass);
+		}
+
+		public Property<T> taskId() {
+			return new LeafProperty<T>(getParentPath(), "taskId", false, owningClass);
+		}
+
+		public Property<T> senderName() {
+			return new LeafProperty<T>(getParentPath(), "senderName", false, owningClass);
+		}
+
+		public Property<T> recipientName() {
+			return new LeafProperty<T>(getParentPath(), "recipientName", false, owningClass);
 		}
 
 		public Property<T> content() {
@@ -135,12 +159,12 @@ public class CommunicationProperties {
 			return new TaskProperty<T>(getParentPath(), "task", owningClass);
 		}
 
-		public UseerProperty<T> sender() {
-			return new UseerProperty<T>(getParentPath(), "sender", owningClass);
+		public EndUserProperty<T> sender() {
+			return new EndUserProperty<T>(getParentPath(), "sender", owningClass);
 		}
 
-		public UseerProperty<T> recipient() {
-			return new UseerProperty<T>(getParentPath(), "recipient", owningClass);
+		public EndUserProperty<T> recipient() {
+			return new EndUserProperty<T>(getParentPath(), "recipient", owningClass);
 		}
 	}
 }

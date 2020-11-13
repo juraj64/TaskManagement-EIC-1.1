@@ -9,10 +9,10 @@
 		<!-- annotated classes -->
 		<class>sk.f4s.easytodev.tasks.domain.Communication</class>
 		<class>sk.f4s.easytodev.tasks.domain.Deployment</class>
+		<class>sk.f4s.easytodev.tasks.domain.EndUser</class>
 		<class>sk.f4s.easytodev.tasks.domain.Project</class>
 		<class>sk.f4s.easytodev.tasks.domain.Task</class>
 		<class>sk.f4s.easytodev.tasks.domain.TimeLine</class>
-		<class>sk.f4s.easytodev.tasks.domain.Useer</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
 		<validation-mode>AUTO</validation-mode>

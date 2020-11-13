@@ -5,25 +5,25 @@
 	<c:url value="/rest/communication" var="action"/>
 	<form:form action="${action}" method="POST" modelAttribute="entity">
 	<div id="communication_taskId">
-       	<label for="_task.id">Task:</label>
-       	<form:input cssStyle="width:300px" id="_task.id" path="task.id"/>
+       	<label for="_taskId">Task ID:</label>
+       	<form:input cssStyle="width:300px" id="_taskId" path="taskId"/>
        	<br/>
-       	<form:errors cssClass="errors" id="_task.id" path="task.id"/>
+       	<form:errors cssClass="errors" id="_taskId" path="taskId"/>
     </div>
-    <div id="communication_sender">
-    		<label for="_sender">Sender:</label>
-    		<form:input cssStyle="width:300px" id="_sender" path="sender"/>
+    <div id="communication_senderName">
+    		<label for="_senderName">From:</label>
+    		<form:input cssStyle="width:300px" id="_senderName" path="senderName"/>
     		<br/>
-    		<form:errors cssClass="errors" id="_sender" path="sender"/>
+    		<form:errors cssClass="errors" id="_senderName" path="senderName"/>
     	</div>
-    <div id="communication_recipient">
-    		<label for="_recipient">Recipient:</label>
-    		<form:input cssStyle="width:300px" id="_recipient" path="recipient"/>
+    <div id="communication_recipientName">
+    		<label for="_recipientName">To:</label>
+    		<form:input cssStyle="width:300px" id="_recipientName" path="recipientName"/>
     		<br/>
-    		<form:errors cssClass="errors" id="_recipient" path="recipient"/>
+    		<form:errors cssClass="errors" id="_recipientName" path="recipientName"/>
     	</div>
 	<div id="communication_content">
-		<label for="_content">Content:</label>
+		<label for="_content">Message:</label>
 		<form:input cssStyle="width:300px" id="_content" path="content"/>
 		<br/>
 		<form:errors cssClass="errors" id="_content" path="content"/>

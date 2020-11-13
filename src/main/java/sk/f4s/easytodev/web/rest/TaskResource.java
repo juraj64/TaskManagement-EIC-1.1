@@ -39,8 +39,8 @@ public class TaskResource extends TaskResourceBase {
 		Date originDate = new Date();
 		entity.setOriginDate(originDate);
 
-		// nacitanie projektu podla id
-		Long projectID = entity.getProject().getId();
+		// nacitanie projektu podla projectID
+		Long projectID = entity.getProjectId();
 		if (projectID != null) {
 			try {
 				Project project = projectService.findById(serviceContext(), projectID);

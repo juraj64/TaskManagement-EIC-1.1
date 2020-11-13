@@ -42,6 +42,11 @@
     		<div class="box" id="_status">${result.status}</div>
     	</div>
     	<br/>
+    	<div id="task_placement">
+        	<label for="_placement">Environment:</label>
+        	<div class="box" id="_placement">${result.placement}</div>
+        </div>
+    	<br/>
 	</c:if>
 	<c:if test="${empty result}">No Task found with this id.</c:if>
 </div>

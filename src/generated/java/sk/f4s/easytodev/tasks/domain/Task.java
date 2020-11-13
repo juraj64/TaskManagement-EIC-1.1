@@ -51,6 +51,9 @@ public class Task extends AbstractDomainObject implements Auditable, Identifiabl
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID")
 	private Long id;
+	@Column(name = "PROJECTID", nullable = false)
+	@NotNull
+	private Long projectId;
 	@Column(name = "NAME", nullable = false, length = 100)
 	@NotNull
 	private String name;
@@ -125,6 +128,15 @@ public class Task extends AbstractDomainObject implements Auditable, Identifiabl
 			throw new IllegalArgumentException("Not allowed to change the id property.");
 		}
 		this.id = id;
+	}
+
+	public Long getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(Long projectId) {
+		this.projectId = projectId;
+
 	}
 
 	public String getName() {

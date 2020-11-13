@@ -1,18 +1,18 @@
 <jsp:directive.include file="/WEB-INF/jsp/includes.jsp"/>
 <jsp:directive.include file="/WEB-INF/jsp/header.jsp"/>
 <div>
-<a href="<c:url value="/rest/communication/form" />">New Communication</a>
+<a href="<c:url value="/rest/communication" />">Show All</a>
 </div>
 <div>
 	<c:if test="${not empty result}">
 	<table>
 		<thead>
 		<th>Id</th>
-		<th><a href="<c:url value="/rest/communication/order/bytask/descending" />">Task</th>
+		<th>Task</th>
 		<th>From</th>
-		<th>To</th>
-		<th>Message</th>
-		<th><a href="<c:url value="/rest/communication/ascending" />">Date</th>
+        <th>To</th>
+        <th>Message</th>
+		<th><a href="<c:url value="/rest/communication/task/ascending" />">Date</th>
 		<th/>
 		<th/>
 		</thead>
@@ -22,7 +22,7 @@
 					<a href="<c:url value="/rest/communication/${each.id}" />">${each.id}</a>
 				</td>
 				<td>
-                   <a href="<c:url value="/rest/communication/task/${each.task.id}" />">${each.task.name}</a>
+                   ${each.task.name}
                 </td>
 				<td>
 					${each.sender.name}
@@ -49,4 +49,3 @@
 	<c:if test="${empty result}"><p>There are no Communications yet.</p></c:if>
 </div>
 <jsp:directive.include file="/WEB-INF/jsp/footer.jsp"/>
-

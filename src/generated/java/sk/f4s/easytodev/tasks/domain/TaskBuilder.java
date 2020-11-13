@@ -17,6 +17,7 @@ import sk.f4s.easytodev.tasks.domain.Type;
  */
 public class TaskBuilder {
 
+	private Long projectId;
 	private String name;
 	private String description;
 	private Date originDate;
@@ -44,6 +45,11 @@ public class TaskBuilder {
 	}
 
 	public TaskBuilder() {
+	}
+
+	public TaskBuilder projectId(Long val) {
+		this.projectId = val;
+		return this;
 	}
 
 	public TaskBuilder name(String val) {
@@ -127,6 +133,10 @@ public class TaskBuilder {
 		return this;
 	}
 
+	public Long getProjectId() {
+		return projectId;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -192,6 +202,7 @@ public class TaskBuilder {
 	 */
 	public Task build() {
 		Task obj = new Task();
+		obj.setProjectId(projectId);
 		obj.setName(name);
 		obj.setDescription(description);
 		obj.setOriginDate(originDate);

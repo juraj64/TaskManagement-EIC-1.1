@@ -3,9 +3,9 @@ package sk.f4s.easytodev.tasks.domain;
 import org.sculptor.framework.domain.LeafProperty;
 import org.sculptor.framework.domain.PropertiesCollection;
 import org.sculptor.framework.domain.Property;
+import sk.f4s.easytodev.tasks.domain.EndUserProperties.EndUserProperty;
 import sk.f4s.easytodev.tasks.domain.TaskProperties.TaskProperty;
 import sk.f4s.easytodev.tasks.domain.TimeLine;
-import sk.f4s.easytodev.tasks.domain.UseerProperties.UseerProperty;
 
 /**
  * This generated interface defines property names for all attributes and associatations in
@@ -57,8 +57,8 @@ public class TimeLineProperties {
 		return sharedInstance.version();
 	}
 
-	public static UseerProperty<TimeLine> useer() {
-		return sharedInstance.useer();
+	public static EndUserProperty<TimeLine> person() {
+		return sharedInstance.person();
 	}
 
 	public static TaskProperty<TimeLine> task() {
@@ -126,8 +126,8 @@ public class TimeLineProperties {
 			return new LeafProperty<T>(getParentPath(), "version", false, owningClass);
 		}
 
-		public UseerProperty<T> useer() {
-			return new UseerProperty<T>(getParentPath(), "useer", owningClass);
+		public EndUserProperty<T> person() {
+			return new EndUserProperty<T>(getParentPath(), "person", owningClass);
 		}
 
 		public TaskProperty<T> task() {

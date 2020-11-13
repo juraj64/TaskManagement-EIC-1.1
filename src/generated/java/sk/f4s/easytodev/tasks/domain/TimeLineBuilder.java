@@ -1,9 +1,9 @@
 package sk.f4s.easytodev.tasks.domain;
 
 import java.util.Date;
+import sk.f4s.easytodev.tasks.domain.EndUser;
 import sk.f4s.easytodev.tasks.domain.Task;
 import sk.f4s.easytodev.tasks.domain.TimeLine;
-import sk.f4s.easytodev.tasks.domain.Useer;
 
 /**
  * Builder for TimeLine class.
@@ -17,7 +17,7 @@ public class TimeLineBuilder {
 	private Date lastUpdated;
 	private String lastUpdatedBy;
 
-	private Useer useer;
+	private EndUser person;
 	private Task task;
 
 	/**
@@ -60,8 +60,8 @@ public class TimeLineBuilder {
 		return this;
 	}
 
-	public TimeLineBuilder useer(Useer useer) {
-		this.useer = useer;
+	public TimeLineBuilder person(EndUser person) {
+		this.person = person;
 		return this;
 	}
 
@@ -94,8 +94,8 @@ public class TimeLineBuilder {
 		return lastUpdatedBy;
 	}
 
-	public Useer getUseer() {
-		return useer;
+	public EndUser getPerson() {
+		return person;
 	}
 
 	public Task getTask() {
@@ -113,7 +113,7 @@ public class TimeLineBuilder {
 		obj.setCreatedBy(createdBy);
 		obj.setLastUpdated(lastUpdated);
 		obj.setLastUpdatedBy(lastUpdatedBy);
-		obj.setUseer(useer);
+		obj.setPerson(person);
 		obj.setTask(task);
 
 		return obj;

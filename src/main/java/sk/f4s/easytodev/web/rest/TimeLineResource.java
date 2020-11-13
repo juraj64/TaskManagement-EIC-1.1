@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import sk.f4s.easytodev.tasks.domain.Communication;
+import sk.f4s.easytodev.tasks.domain.EndUser;
 import sk.f4s.easytodev.tasks.domain.Task;
 import sk.f4s.easytodev.tasks.domain.TimeLine;
-import sk.f4s.easytodev.tasks.domain.Useer;
+
+import sk.f4s.easytodev.tasks.serviceapi.EndUserService;
 import sk.f4s.easytodev.tasks.serviceapi.TaskService;
-import sk.f4s.easytodev.tasks.serviceapi.UseerService;
+
 
 import java.util.Date;
 
@@ -27,7 +29,7 @@ public class TimeLineResource extends TimeLineResourceBase {
 	@Autowired
 	private TaskService taskService;
 	@Autowired
-	private UseerService useerService;
+	private EndUserService endUserService;
 
 	@RequestMapping(value = "/timeLine/form", method = RequestMethod.GET)
 	public String createForm(ModelMap modelMap) {
@@ -36,9 +38,20 @@ public class TimeLineResource extends TimeLineResourceBase {
 		return "timeLine/create";
 	}
 
-	// Doplnena overwritnuta metoda pre vytvorenie novej Communication
+	// Doplnena overwritnuta metoda pre vytvorenie novej timeLine
 	@RequestMapping(value = "/timeline", method = RequestMethod.POST)
 	public String create(@RequestBody TimeLine entity) {
+
+		// nacitanie persony podla id
+		Long personId = entity.getPerson().getId();
+		if (personId != null) {
+			try {
+				EndUser person = endUserService.findById(serviceContext(), personId);
+				entity.setPerson(person);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 
 		// nacitanie Tasku podla id
 		Long taskId = entity.getTask().getId();
@@ -46,17 +59,6 @@ public class TimeLineResource extends TimeLineResourceBase {
 			try {
 				Task task = taskService.findById(serviceContext(), taskId);
 				entity.setTask(task);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-		// nacitanie sendera podla id
-		Long useerId = entity.getUseer().getId();
-		if (useerId != null) {
-			try {
-				Useer user = useerService.findById(serviceContext(), useerId);
-				entity.setUseer(user);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

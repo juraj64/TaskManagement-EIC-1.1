@@ -23,7 +23,7 @@ Application TaskManagement {
              scaffold
         }
 
-        Resource UseerResource {
+        Resource EndUserResource {
             scaffold
         }
 
@@ -68,6 +68,7 @@ Application TaskManagement {
        Entity Task {
            scaffold
            - @Project project <-> tasks cascade="persist,merge";  // k akemu projektu patri
+           Long projectId;  // kvoli nacitaniu projektu cez localhost
            String name;
            String description;
            - @Type taskType;
@@ -100,13 +101,13 @@ Application TaskManagement {
         }
 
         // historia tasku napr.
-        // vytvoreny 1.9.2020 --> v risesni 8.9.2020 --> vyrieseny 9.9.2020 --> nasadeny Test 1.10.2020 -->
+        // vytvoreny 1.9.2020 --> v rieseni 8.9.2020 --> vyrieseny 9.9.2020 --> nasadeny Test 1.10.2020 -->
         // vrateny 2.10.2020 --> v rieseni 2.10.2020 --> nasadeny Test 2.10.2010 --> nasadeny RUT 1.12.2020
         Entity TimeLine {
             scaffold
             Date date;
-            String label; // kombinacia TaskStatus a Environment. Automaticky alebo aj rucne?
-            - @Useer useer;
+            String label; // kombinacia TaskStatus a Environment a EndUser. Automaticky alebo aj rucne?
+            - @EndUser person; // kto zadal
             - @Task task <-> timeLines cascade="persist,merge";  // k akemu tasku patri
 
             Repository TimeLineRepository {
@@ -114,12 +115,12 @@ Application TaskManagement {
             }
         }
 
-        Entity Useer {
+        Entity EndUser {
             scaffold
             String name;
             String role; // este sa doplni viac fieldov
 
-            Repository UseerRepository {
+            Repository EndUserRepository {
                  findByCondition;
             }
         }
@@ -127,10 +128,13 @@ Application TaskManagement {
         Entity Communication {
             scaffold
             - @Task task <-> communications cascade="persist,merge";  // k akemu tasku patri
-            - @Useer sender;
-            - @Useer recipient;
+            Long taskId; // kvoli nacitaniu tasku cez localhost
+            - @EndUser sender cascade="persist,merge"; // aby mohli byt dve entity EndUsera pri Communication
+            String senderName; // kvoli nacitaniu sendera cez localhost
+            - @EndUser recipient cascade="persist,merge";
+            String recipientName;  // kvoli nacitaniu sendera cez localhost
             String content;    // vlastna komunikacia
-            Date date; // v den zapisu do systemu, vygeneruje sa automaticky
+            Date date; // den zapisu do systemu, vygeneruje sa automaticky
 
             Repository CommunicationRepository {
                 findByCondition;
@@ -142,6 +146,16 @@ Application TaskManagement {
         }
 
         Service DeploymentService {
+        // Najprv sa vytvori novy Deployment (ak neexistuje) s pozadovanym environmentom
+        // Pridat postupne jednotlive tasky do Deploymentu
+        // kontrola, ci vsetky Tasky su v current environmente
+        // label --> ready to deploy
+        @Deployment addTask(@Task task, @Environment currentEnvironment);
+
+        // Urobit deployment z currentEnvironment do noveho Environment pre vsetky tasky, ktore su ready
+        // label --> date + newEnvironment
+
+        @Deployment toDeploy (
             findByCondition => DeploymentRepository.findByCondition;
         }
 
@@ -153,12 +167,34 @@ Application TaskManagement {
             findByCondition => TimeLineRepository.findByCondition;
         }
 
-        Service UseerService {
-           findByCondition => UseerRepository.findByCondition;
+        Service EndUserService {
+        // najdi usera podla mena
+        @EndUser findByName(String name);
+
+        findByCondition => EndUserRepository.findByCondition;
         }
 
         Service CommunicationService {
-            findByCondition => CommunicationRepository.findByCondition;
+        // vsetky komunikacie zoradene zostupne podla casu (od najnovsej po najstarsiu)
+        // Vyuzivam pre metodu showAll v resource
+        List<@Communication> orderByDateDesc();
+
+        // to iste, ale casovo zoradene vzostupne (od najnovsej)
+        List<@Communication> orderByDateAsc();
+
+        // vsetky komunikacie zoradene podla nazvu tasku abc
+        List<@Communication> orderByTask();
+
+        // vsetky komunikacie zoradene podla nazvu tasku zyx
+        List<@Communication> orderByTaskDesc();
+
+        // komunikacia daneho Tasku zoradena casovo zostupne (od najnovsej po najstarsiu)
+        List<@Communication> showByTaskDesc(@Task task);
+
+        // to iste, ale casovo zoradene vzostupne (od najnovsej)
+        List<@Communication> showByTaskAsc(@Task task);
+
+        findByCondition => CommunicationRepository.findByCondition;
         }
     }
 

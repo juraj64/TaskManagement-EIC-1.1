@@ -2,23 +2,28 @@
 <jsp:directive.include file="/WEB-INF/jsp/header.jsp"/>
 <div>
 	<c:if test="${not empty result}">
+	    <div id="communication_task.project.name">
+           	<label for="_task.project.name">Project:</label>
+           	<div class="box" id="_task.project.name">${result.task.project.name}</div>
+        </div>
+        <br/>
 		<div id="communication_task.name">
            	<label for="_task.name">Task:</label>
            	<div class="box" id="_task.name">${result.task.name}</div>
         </div>
         <br/>
         <div id="communication_sender.name">
-        	<label for="_sender.name">Sender:</label>
+        	<label for="_sender.name">From:</label>
         	<div class="box" id="_sender.name">${result.sender.name}</div>
         </div>
         <br/>
         <div id="communication_recipient.name">
-        	<label for="_recipient.name">Recipient:</label>
+        	<label for="_recipient.name">To:</label>
         	<div class="box" id="_recipient.name">${result.recipient.name}</div>
         </div>
         <br/>
 		<div id="communication_content">
-			<label for="_content">Content:</label>
+			<label for="_content">Message:</label>
 			<div class="box" id="_content">${result.content}</div>
 		</div>
 		<br/>

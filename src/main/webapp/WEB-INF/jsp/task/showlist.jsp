@@ -8,7 +8,7 @@
 	<table>
 		<thead>
 		<th>Id</th>
-		<th>Project</th>
+		<th>Project ID</th>
 		<th>Task</th>
 		<th>Description</th>
 		<th>Type</th>
@@ -16,6 +16,7 @@
 		<th>Priority</th>
 		<th>Deadline</th>
 		<th>Status</th>
+		<th>Environment</th>
 		<th/>
 		<th/>
 		</thead>
@@ -25,7 +26,7 @@
 					<a href="<c:url value="/rest/task/${each.id}" />">${each.id}</a>
 				</td>
 				<td>
-                    ${each.project.name}
+                    ${each.project.id}
                 </td>
 				<td>
 					${each.name}
@@ -47,6 +48,9 @@
 				</td>
 				<td>
                 	${each.status}
+                </td>
+                <td>
+                   	${each.placement}
                 </td>
 				<td>
 					<a href="<c:url value="/rest/task/${each.id}" />">Show</a>
