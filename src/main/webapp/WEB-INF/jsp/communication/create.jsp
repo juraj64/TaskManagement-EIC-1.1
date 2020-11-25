@@ -4,11 +4,11 @@
 	<h2>New Communication</h2>
 	<c:url value="/rest/communication" var="action"/>
 	<form:form action="${action}" method="POST" modelAttribute="entity">
-	<div id="communication_taskId">
-       	<label for="_taskId">Task ID:</label>
-       	<form:input cssStyle="width:300px" id="_taskId" path="taskId"/>
+	<div id="communication_task">
+       	<label for="_task.name">Task:</label>
+       	<form:input cssStyle="width:300px" id="_task.name" path="task.name"/>
        	<br/>
-       	<form:errors cssClass="errors" id="_taskId" path="taskId"/>
+       	<form:errors cssClass="errors" id="_task.name" path="task.name"/>
     </div>
     <div id="communication_senderName">
     		<label for="_senderName">From:</label>

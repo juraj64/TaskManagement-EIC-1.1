@@ -5,6 +5,12 @@ package sk.f4s.easytodev.tasks.serviceapi;
  */
 public interface TaskServiceTestBase {
 
+	public void testChangeStatus() throws Exception;
+
+	public void testFindByName() throws Exception;
+
+	public void testFindIdByName() throws Exception;
+
 	public void testFindByCondition() throws Exception;
 
 	public void testFindById() throws Exception;

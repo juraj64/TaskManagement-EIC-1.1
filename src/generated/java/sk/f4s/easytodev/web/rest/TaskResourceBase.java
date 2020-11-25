@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import sk.f4s.easytodev.tasks.domain.Task;
+import sk.f4s.easytodev.tasks.exception.EndUserNotFoundException;
+import sk.f4s.easytodev.tasks.exception.ProjectNotFoundException;
 import sk.f4s.easytodev.tasks.exception.TaskNotFoundException;
 import sk.f4s.easytodev.tasks.serviceapi.TaskService;
 
@@ -71,7 +73,7 @@ public abstract class TaskResourceBase {
 	}
 
 	@RequestMapping(value = "/task", method = RequestMethod.POST)
-	public String create(@RequestBody Task entity) {
+	public String create(@RequestBody Task entity) throws ProjectNotFoundException, EndUserNotFoundException {
 		Task result = taskService.save(serviceContext(), entity);
 		return String.format("redirect:/rest/task/%s", result.getId());
 	}
@@ -94,7 +96,7 @@ public abstract class TaskResourceBase {
 	 * This method is needed for form data POST. Delegates to {@link #create}
 	 */
 	@RequestMapping(value = "/task", method = RequestMethod.POST, headers = "content-type=application/x-www-form-urlencoded")
-	public String createFromForm(@ModelAttribute("entity") Task entity) {
+	public String createFromForm(@ModelAttribute("entity") Task entity) throws EndUserNotFoundException, ProjectNotFoundException {
 		return create(entity);
 	}
 

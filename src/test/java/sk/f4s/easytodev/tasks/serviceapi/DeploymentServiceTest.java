@@ -16,6 +16,24 @@ public class DeploymentServiceTest extends AbstractDbUnitJpaTests implements Dep
 	protected DeploymentService deploymentService;
 
 	@Test
+	public void testAddTask() throws Exception {
+		// TODO Auto-generated method stub
+		fail("testAddTask not implemented");
+	}
+
+	@Test
+	public void testFindNumberAddedTasks() throws Exception {
+		// TODO Auto-generated method stub
+		fail("testFindNumberAddedTasks not implemented");
+	}
+
+	@Test
+	public void testToDeploy() throws Exception {
+		// TODO Auto-generated method stub
+		fail("testToDeploy not implemented");
+	}
+
+	@Test
 	public void testFindByCondition() throws Exception {
 		// TODO Auto-generated method stub
 		fail("testFindByCondition not implemented");

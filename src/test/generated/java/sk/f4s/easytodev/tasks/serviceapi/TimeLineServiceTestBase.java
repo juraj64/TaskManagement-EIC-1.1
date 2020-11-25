@@ -5,6 +5,8 @@ package sk.f4s.easytodev.tasks.serviceapi;
  */
 public interface TimeLineServiceTestBase {
 
+	public void testFindByTask() throws Exception;
+
 	public void testFindByCondition() throws Exception;
 
 	public void testFindById() throws Exception;

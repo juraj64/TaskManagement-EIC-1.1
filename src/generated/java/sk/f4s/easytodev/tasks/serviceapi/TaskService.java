@@ -4,6 +4,7 @@ import java.util.List;
 import org.sculptor.framework.accessapi.ConditionalCriteria;
 import org.sculptor.framework.context.ServiceContext;
 import sk.f4s.easytodev.tasks.domain.Task;
+import sk.f4s.easytodev.tasks.domain.TaskStatus;
 import sk.f4s.easytodev.tasks.exception.TaskNotFoundException;
 
 /**
@@ -12,6 +13,12 @@ import sk.f4s.easytodev.tasks.exception.TaskNotFoundException;
 public interface TaskService {
 
 	public final static String BEAN_ID = "taskService";
+
+	public Task changeStatus(ServiceContext ctx, String taskName, TaskStatus newStatus, String personName);
+
+	public Task findByName(ServiceContext ctx, String name);
+
+	public Long findIdByName(ServiceContext ctx, String name);
 
 	public List<Task> findByCondition(ServiceContext ctx, List<ConditionalCriteria> condition);
 

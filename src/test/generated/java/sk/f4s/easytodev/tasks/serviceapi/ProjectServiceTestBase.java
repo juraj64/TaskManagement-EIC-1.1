@@ -5,6 +5,10 @@ package sk.f4s.easytodev.tasks.serviceapi;
  */
 public interface ProjectServiceTestBase {
 
+	public void testFindByName() throws Exception;
+
+	public void testFindIdByName() throws Exception;
+
 	public void testFindByCondition() throws Exception;
 
 	public void testFindById() throws Exception;

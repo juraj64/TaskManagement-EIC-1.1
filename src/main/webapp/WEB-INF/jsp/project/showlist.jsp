@@ -29,9 +29,6 @@
 					${each.launchDate}
 				</td>
 				<td>
-					<a href="<c:url value="/rest/project/${each.id}" />">Show</a>
-				</td>
-				<td>
 					<c:url value="/rest/project/${each.id}" var="action"/>
 					<form:form action="${action}" method="DELETE">
 						<input id="delete" type="submit" value="Delete"/>

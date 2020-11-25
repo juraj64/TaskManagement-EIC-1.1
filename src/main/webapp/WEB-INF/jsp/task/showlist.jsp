@@ -1,7 +1,11 @@
 <jsp:directive.include file="/WEB-INF/jsp/includes.jsp"/>
 <jsp:directive.include file="/WEB-INF/jsp/header.jsp"/>
 <div>
+<h2>Tasks</h2>
 <a href="<c:url value="/rest/task/form" />">New Task</a>
+<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+<a href="<c:url value="/rest/task/changestatus/form" />">Change Task Status</a>
+
 </div>
 <div>
 	<c:if test="${not empty result}">
@@ -12,11 +16,12 @@
 		<th>Task</th>
 		<th>Description</th>
 		<th>Type</th>
-		<th>Origin date</th>
+		<th>Origin Date</th>
 		<th>Priority</th>
 		<th>Deadline</th>
 		<th>Status</th>
 		<th>Environment</th>
+		<th>Created by</th>
 		<th/>
 		<th/>
 		</thead>
@@ -26,7 +31,7 @@
 					<a href="<c:url value="/rest/task/${each.id}" />">${each.id}</a>
 				</td>
 				<td>
-                    ${each.project.id}
+                    <a href="<c:url value="/rest/project/${each.project.id}" />">${each.project.id}</a>
                 </td>
 				<td>
 					${each.name}
@@ -52,9 +57,9 @@
                 <td>
                    	${each.placement}
                 </td>
-				<td>
-					<a href="<c:url value="/rest/task/${each.id}" />">Show</a>
-				</td>
+                <td>
+                	${each.person.name}
+                </td>
 				<td>
 					<c:url value="/rest/task/${each.id}" var="action"/>
 					<form:form action="${action}" method="DELETE">

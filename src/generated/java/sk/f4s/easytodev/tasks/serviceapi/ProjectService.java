@@ -13,6 +13,10 @@ public interface ProjectService {
 
 	public final static String BEAN_ID = "projectService";
 
+	public Project findByName(ServiceContext ctx, String name);
+
+	public Long findIdByName(ServiceContext ctx, String name);
+
 	public List<Project> findByCondition(ServiceContext ctx, List<ConditionalCriteria> condition);
 
 	public Project findById(ServiceContext ctx, Long id) throws ProjectNotFoundException;

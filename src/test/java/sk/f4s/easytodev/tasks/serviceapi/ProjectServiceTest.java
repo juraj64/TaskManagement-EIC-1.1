@@ -16,6 +16,18 @@ public class ProjectServiceTest extends AbstractDbUnitJpaTests implements Projec
 	protected ProjectService projectService;
 
 	@Test
+	public void testFindByName() throws Exception {
+		// TODO Auto-generated method stub
+		fail("testFindByName not implemented");
+	}
+
+	@Test
+	public void testFindIdByName() throws Exception {
+		// TODO Auto-generated method stub
+		fail("testFindIdByName not implemented");
+	}
+
+	@Test
 	public void testFindByCondition() throws Exception {
 		// TODO Auto-generated method stub
 		fail("testFindByCondition not implemented");

@@ -23,7 +23,7 @@
       	</div>
     	<br/>
 		<div id="task_originDate">
-			<label for="_originDate">Origin date:</label>
+			<label for="_originDate">Origin Date:</label>
 			<div class="box" id="_originDate">${result.originDate}</div>
 		</div>
 		<br/>
@@ -45,6 +45,11 @@
     	<div id="task_placement">
         	<label for="_placement">Environment:</label>
         	<div class="box" id="_placement">${result.placement}</div>
+        </div>
+        <br/>
+        <div id="task_person">
+        	<label for="_person.name">Created by:</label>
+        	<div class="box" id="_person.name">${result.person.name}</div>
         </div>
     	<br/>
 	</c:if>

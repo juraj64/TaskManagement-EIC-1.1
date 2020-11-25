@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import sk.f4s.easytodev.tasks.domain.Communication;
 import sk.f4s.easytodev.tasks.exception.CommunicationNotFoundException;
+import sk.f4s.easytodev.tasks.exception.EndUserNotFoundException;
+import sk.f4s.easytodev.tasks.exception.TaskNotFoundException;
 import sk.f4s.easytodev.tasks.serviceapi.CommunicationService;
 
 /**
@@ -71,7 +73,7 @@ public abstract class CommunicationResourceBase {
 	}
 
 	@RequestMapping(value = "/communication", method = RequestMethod.POST)
-	public String create(@RequestBody Communication entity) {
+	public String create(@RequestBody Communication entity) throws TaskNotFoundException, EndUserNotFoundException {
 		Communication result = communicationService.save(serviceContext(), entity);
 		return String.format("redirect:/rest/communication/%s", result.getId());
 	}
@@ -94,7 +96,7 @@ public abstract class CommunicationResourceBase {
 	 * This method is needed for form data POST. Delegates to {@link #create}
 	 */
 	@RequestMapping(value = "/communication", method = RequestMethod.POST, headers = "content-type=application/x-www-form-urlencoded")
-	public String createFromForm(@ModelAttribute("entity") Communication entity) {
+	public String createFromForm(@ModelAttribute("entity") Communication entity) throws EndUserNotFoundException, TaskNotFoundException {
 		return create(entity);
 	}
 

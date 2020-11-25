@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import sk.f4s.easytodev.tasks.domain.Communication;
+import sk.f4s.easytodev.tasks.domain.EndUser;
 import sk.f4s.easytodev.tasks.domain.Environment;
 import sk.f4s.easytodev.tasks.domain.Priority;
 import sk.f4s.easytodev.tasks.domain.Project;
@@ -22,6 +23,7 @@ public class TaskBuilder {
 	private String description;
 	private Date originDate;
 	private Date deadline;
+	private String personName;
 	private Date createdDate;
 	private String createdBy;
 	private Date lastUpdated;
@@ -31,6 +33,7 @@ public class TaskBuilder {
 	private Type taskType;
 	private Priority priority;
 	private TaskStatus status;
+	private EndUser person;
 	private Environment placement;
 
 	private List<Communication> communications = new ArrayList<Communication>();
@@ -72,6 +75,11 @@ public class TaskBuilder {
 		return this;
 	}
 
+	public TaskBuilder personName(String val) {
+		this.personName = val;
+		return this;
+	}
+
 	public TaskBuilder createdDate(Date val) {
 		this.createdDate = val;
 		return this;
@@ -109,6 +117,11 @@ public class TaskBuilder {
 
 	public TaskBuilder status(TaskStatus status) {
 		this.status = status;
+		return this;
+	}
+
+	public TaskBuilder person(EndUser person) {
+		this.person = person;
 		return this;
 	}
 
@@ -153,6 +166,10 @@ public class TaskBuilder {
 		return deadline;
 	}
 
+	public String getPersonName() {
+		return personName;
+	}
+
 	public Date getCreatedDate() {
 		return createdDate;
 	}
@@ -185,6 +202,10 @@ public class TaskBuilder {
 		return status;
 	}
 
+	public EndUser getPerson() {
+		return person;
+	}
+
 	public Environment getPlacement() {
 		return placement;
 	}
@@ -207,6 +228,7 @@ public class TaskBuilder {
 		obj.setDescription(description);
 		obj.setOriginDate(originDate);
 		obj.setDeadline(deadline);
+		obj.setPersonName(personName);
 		obj.setCreatedDate(createdDate);
 		obj.setCreatedBy(createdBy);
 		obj.setLastUpdated(lastUpdated);
@@ -215,6 +237,7 @@ public class TaskBuilder {
 		obj.setTaskType(taskType);
 		obj.setPriority(priority);
 		obj.setStatus(status);
+		obj.setPerson(person);
 		obj.setPlacement(placement);
 		obj.getCommunications().addAll(communications);
 		obj.getTimeLines().addAll(timeLines);

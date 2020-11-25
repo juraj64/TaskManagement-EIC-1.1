@@ -16,6 +16,24 @@ public class TaskServiceTest extends AbstractDbUnitJpaTests implements TaskServi
 	protected TaskService taskService;
 
 	@Test
+	public void testChangeStatus() throws Exception {
+		// TODO Auto-generated method stub
+		fail("testChangeStatus not implemented");
+	}
+
+	@Test
+	public void testFindByName() throws Exception {
+		// TODO Auto-generated method stub
+		fail("testFindByName not implemented");
+	}
+
+	@Test
+	public void testFindIdByName() throws Exception {
+		// TODO Auto-generated method stub
+		fail("testFindIdByName not implemented");
+	}
+
+	@Test
 	public void testFindByCondition() throws Exception {
 		// TODO Auto-generated method stub
 		fail("testFindByCondition not implemented");

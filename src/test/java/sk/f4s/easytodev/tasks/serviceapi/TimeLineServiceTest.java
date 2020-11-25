@@ -16,6 +16,12 @@ public class TimeLineServiceTest extends AbstractDbUnitJpaTests implements TimeL
 	protected TimeLineService timeLineService;
 
 	@Test
+	public void testFindByTask() throws Exception {
+		// TODO Auto-generated method stub
+		fail("testFindByTask not implemented");
+	}
+
+	@Test
 	public void testFindByCondition() throws Exception {
 		// TODO Auto-generated method stub
 		fail("testFindByCondition not implemented");

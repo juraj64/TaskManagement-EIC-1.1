@@ -7,8 +7,13 @@
 			<div class="box" id="_label">${result.label}</div>
 		</div>
 		<br/>
+		<div id="deployment_environment">
+        	<label for="_environment">Environment:</label>
+        	<div class="box" id="_label">${result.environment}</div>
+        </div>
+        <br/>
 		<div id="deployment_date">
-			<label for="_date">Date:</label>
+			<label for="_date">Origin Date:</label>
 			<div class="box" id="_date">${result.date}</div>
 		</div>
 		<br/>

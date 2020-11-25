@@ -9,4 +9,11 @@
 </head>
 <body >	
 	<div id="wrap">
-	<div id="main">	
+	<div id="main">
+
+
+<p style="text-align:right;"><a href="<c:url value="/rest/front" />">Home</a>
+  <table class="footer">
+      <td>&nbsp;</td>
+  </table>
+

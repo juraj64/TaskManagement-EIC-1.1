@@ -73,7 +73,7 @@ public class Communication extends AbstractDomainObject implements Auditable, Id
 	@Column(name = "VERSION", nullable = false)
 	private Long version;
 
-	@ManyToOne(optional = false, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "TASK", nullable = false)
 	@ForeignKey(name = "FK_COMMUNICATION_TASK")
 	@NotNull

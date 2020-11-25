@@ -3,6 +3,7 @@ package sk.f4s.easytodev.tasks.serviceapi;
 import java.util.List;
 import org.sculptor.framework.accessapi.ConditionalCriteria;
 import org.sculptor.framework.context.ServiceContext;
+import sk.f4s.easytodev.tasks.domain.Task;
 import sk.f4s.easytodev.tasks.domain.TimeLine;
 import sk.f4s.easytodev.tasks.exception.TimeLineNotFoundException;
 
@@ -12,6 +13,8 @@ import sk.f4s.easytodev.tasks.exception.TimeLineNotFoundException;
 public interface TimeLineService {
 
 	public final static String BEAN_ID = "timeLineService";
+
+	public TimeLine findByTask(ServiceContext ctx, Task task);
 
 	public List<TimeLine> findByCondition(ServiceContext ctx, List<ConditionalCriteria> condition);
 

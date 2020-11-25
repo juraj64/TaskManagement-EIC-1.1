@@ -4,6 +4,7 @@ import org.sculptor.framework.domain.LeafProperty;
 import org.sculptor.framework.domain.PropertiesCollection;
 import org.sculptor.framework.domain.Property;
 import sk.f4s.easytodev.tasks.domain.CommunicationProperties.CommunicationProperty;
+import sk.f4s.easytodev.tasks.domain.EndUserProperties.EndUserProperty;
 import sk.f4s.easytodev.tasks.domain.ProjectProperties.ProjectProperty;
 import sk.f4s.easytodev.tasks.domain.Task;
 import sk.f4s.easytodev.tasks.domain.TimeLineProperties.TimeLineProperty;
@@ -44,6 +45,10 @@ public class TaskProperties {
 
 	public static Property<Task> deadline() {
 		return sharedInstance.deadline();
+	}
+
+	public static Property<Task> personName() {
+		return sharedInstance.personName();
 	}
 
 	public static Property<Task> uuid() {
@@ -88,6 +93,10 @@ public class TaskProperties {
 
 	public static ProjectProperty<Task> project() {
 		return sharedInstance.project();
+	}
+
+	public static EndUserProperty<Task> person() {
+		return sharedInstance.person();
 	}
 
 	public static CommunicationProperty<Task> communications() {
@@ -147,6 +156,10 @@ public class TaskProperties {
 			return new LeafProperty<T>(getParentPath(), "deadline", false, owningClass);
 		}
 
+		public Property<T> personName() {
+			return new LeafProperty<T>(getParentPath(), "personName", false, owningClass);
+		}
+
 		public Property<T> uuid() {
 			return new LeafProperty<T>(getParentPath(), "uuid", false, owningClass);
 		}
@@ -189,6 +202,10 @@ public class TaskProperties {
 
 		public ProjectProperty<T> project() {
 			return new ProjectProperty<T>(getParentPath(), "project", owningClass);
+		}
+
+		public EndUserProperty<T> person() {
+			return new EndUserProperty<T>(getParentPath(), "person", owningClass);
 		}
 
 		public CommunicationProperty<T> communications() {

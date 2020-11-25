@@ -12,6 +12,7 @@ public class TimeLineBuilder {
 
 	private Date date;
 	private String label;
+	private Long personId;
 	private Date createdDate;
 	private String createdBy;
 	private Date lastUpdated;
@@ -37,6 +38,11 @@ public class TimeLineBuilder {
 
 	public TimeLineBuilder label(String val) {
 		this.label = val;
+		return this;
+	}
+
+	public TimeLineBuilder personId(Long val) {
+		this.personId = val;
 		return this;
 	}
 
@@ -78,6 +84,10 @@ public class TimeLineBuilder {
 		return label;
 	}
 
+	public Long getPersonId() {
+		return personId;
+	}
+
 	public Date getCreatedDate() {
 		return createdDate;
 	}
@@ -109,6 +119,7 @@ public class TimeLineBuilder {
 		TimeLine obj = new TimeLine();
 		obj.setDate(date);
 		obj.setLabel(label);
+		obj.setPersonId(personId);
 		obj.setCreatedDate(createdDate);
 		obj.setCreatedBy(createdBy);
 		obj.setLastUpdated(lastUpdated);

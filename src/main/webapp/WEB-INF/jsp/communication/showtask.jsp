@@ -12,7 +12,7 @@
 		<th>From</th>
         <th>To</th>
         <th>Message</th>
-		<th><a href="<c:url value="/rest/communication/task/ascending" />">Date</th>
+		<th>Date</th>
 		<th/>
 		<th/>
 		</thead>
@@ -22,7 +22,7 @@
 					<a href="<c:url value="/rest/communication/${each.id}" />">${each.id}</a>
 				</td>
 				<td>
-                   ${each.task.name}
+                   <a href="<c:url value="/rest/task/${each.task.id}" />">${each.task.name}</a>
                 </td>
 				<td>
 					${each.sender.name}

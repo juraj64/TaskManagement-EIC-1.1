@@ -33,6 +33,10 @@ public class TimeLineProperties {
 		return sharedInstance.label();
 	}
 
+	public static Property<TimeLine> personId() {
+		return sharedInstance.personId();
+	}
+
 	public static Property<TimeLine> uuid() {
 		return sharedInstance.uuid();
 	}
@@ -100,6 +104,10 @@ public class TimeLineProperties {
 
 		public Property<T> label() {
 			return new LeafProperty<T>(getParentPath(), "label", false, owningClass);
+		}
+
+		public Property<T> personId() {
+			return new LeafProperty<T>(getParentPath(), "personId", false, owningClass);
 		}
 
 		public Property<T> uuid() {

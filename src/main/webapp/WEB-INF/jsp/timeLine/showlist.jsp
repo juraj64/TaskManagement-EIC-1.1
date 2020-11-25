@@ -1,17 +1,21 @@
 <jsp:directive.include file="/WEB-INF/jsp/includes.jsp"/>
 <jsp:directive.include file="/WEB-INF/jsp/header.jsp"/>
 <div>
-<a href="<c:url value="/rest/timeLine/form" />">New TimeLine</a>
+<h2>TimeLines</h2>
+<a href="<c:url value="/rest/deployment/addtask/form" />">Add Task To Deployment</a>
+<th>&nbsp;&nbsp; --------------> &nbsp;&nbsp;</th>
+<a href="<c:url value="/rest/deployment/deploy/form" />">Make Deployment</a>
+<br/>
 </div>
 <div>
 	<c:if test="${not empty result}">
 	<table>
 		<thead>
 		<th>Id</th>
-		<th>Date</th>
+		<th><a href="<c:url value="/rest/timeLine/order/bytask/descending" />">Task</th>
 		<th>Label</th>
-		<th>User</th>
-		<th>Task</th>
+		<th><a href="<c:url value="/rest/timeLine/ascending" />">Date</th>
+		<th>Created by</th>
 		<th/>
 		<th/>
 		</thead>
@@ -21,20 +25,17 @@
 					<a href="<c:url value="/rest/timeLine/${each.id}" />">${each.id}</a>
 				</td>
 				<td>
+                   	<a href="<c:url value="/rest/timeLine/task/${each.task.id}" />">${each.task.name}</a>
+                </td>
+                <td>
+            		${each.label}
+                </td>
+				<td>
 					${each.date}
 				</td>
 				<td>
-					${each.label}
-				</td>
-				<td>
-                	${each.useer.name}
+                	${each.person.name}
                 </td>
-                <td>
-                   	${each.task.name}
-                </td>
-				<td>
-					<a href="<c:url value="/rest/timeLine/${each.id}" />">Show</a>
-				</td>
 				<td>
 					<c:url value="/rest/timeLine/${each.id}" var="action"/>
 					<form:form action="${action}" method="DELETE">

@@ -5,6 +5,12 @@ package sk.f4s.easytodev.tasks.serviceapi;
  */
 public interface DeploymentServiceTestBase {
 
+	public void testAddTask() throws Exception;
+
+	public void testFindNumberAddedTasks() throws Exception;
+
+	public void testToDeploy() throws Exception;
+
 	public void testFindByCondition() throws Exception;
 
 	public void testFindById() throws Exception;

@@ -30,6 +30,7 @@ import org.sculptor.framework.domain.AuditListener;
 import org.sculptor.framework.domain.Auditable;
 import org.sculptor.framework.domain.Identifiable;
 import sk.f4s.easytodev.tasks.domain.Communication;
+import sk.f4s.easytodev.tasks.domain.EndUser;
 import sk.f4s.easytodev.tasks.domain.Environment;
 import sk.f4s.easytodev.tasks.domain.Priority;
 import sk.f4s.easytodev.tasks.domain.Project;
@@ -68,6 +69,9 @@ public class Task extends AbstractDomainObject implements Auditable, Identifiabl
 	@Type(type = "date")
 	@NotNull
 	private Date deadline;
+	@Column(name = "PERSONNAME", nullable = false, length = 100)
+	@NotNull
+	private String personName;
 	@Column(name = "UUID", nullable = false, length = 36, unique = true)
 	private String uuid;
 	@Temporal(TemporalType.TIMESTAMP)
@@ -101,6 +105,11 @@ public class Task extends AbstractDomainObject implements Auditable, Identifiabl
 	@Enumerated(EnumType.STRING)
 	@NotNull
 	private TaskStatus status;
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(name = "PERSON", nullable = false)
+	@ForeignKey(name = "FK_TASK_PERSON")
+	@NotNull
+	private EndUser person;
 	@Column(name = "PLACEMENT", nullable = false, length = 4)
 	@Enumerated(EnumType.STRING)
 	@NotNull
@@ -172,6 +181,15 @@ public class Task extends AbstractDomainObject implements Auditable, Identifiabl
 
 	public void setDeadline(Date deadline) {
 		this.deadline = deadline;
+
+	}
+
+	public String getPersonName() {
+		return personName;
+	}
+
+	public void setPersonName(String personName) {
+		this.personName = personName;
 
 	}
 
@@ -262,6 +280,14 @@ public class Task extends AbstractDomainObject implements Auditable, Identifiabl
 
 	public void setStatus(TaskStatus status) {
 		this.status = status;
+	}
+
+	public EndUser getPerson() {
+		return person;
+	}
+
+	public void setPerson(EndUser person) {
+		this.person = person;
 	}
 
 	public Environment getPlacement() {

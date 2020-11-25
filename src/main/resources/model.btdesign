@@ -47,13 +47,14 @@ Application TaskManagement {
        }
 
        // ak niekto z developerov alebo operations urobi build v jenkinse a nasadi ho bud do TEST alebo RUT, tak vytvori novy zaznam.
-       //ak urobi deployment do testovacieho prostredia, tak vsetkym resolved taskom  sa zmeni placement na TEST
+       // ak urobi deployment do testovacieho prostredia, tak vsetkym resolved taskom  sa zmeni placement na TEST
        // ak urobi deploy do RUT, tak vsetky tasky, ktore maju placement TEST, sa im zmeni placement na RUT
+       // pri zmene prostredia sa status tasku zmeni s resolved na accepted
        Entity Deployment {
             scaffold
-            String label;  // vygeneruje sa automaticky, napr. deployment test
-            - @Environment environment;
-            Date date;
+            String label;  // DEV --> TEST, resp. TEST --> RUT
+            - @Environment environment; // DEV alebo TEST
+            Date date; // vygeneruje sa automaticky
             - List<@Task> tasks;  // tasky, ktorych sa zmena environment tyka
 
             Repository DeploymentRepository {
@@ -68,7 +69,7 @@ Application TaskManagement {
        Entity Task {
            scaffold
            - @Project project <-> tasks cascade="persist,merge";  // k akemu projektu patri
-           Long projectId;  // kvoli nacitaniu projektu cez localhost
+           Long projectId;  // kvoli moznosti nacitaniu projektu cez localhost pomocou id
            String name;
            String description;
            - @Type taskType;
@@ -76,6 +77,8 @@ Application TaskManagement {
            - @Priority priority;
            Date deadline;
            - @TaskStatus status;  // stav rozpracovanosti
+           - @EndUser person; // kto vytvoril task
+           String personName; // kvoli metodam a ich nacitaniu cez resource
            - List<@Communication> communications <-> task inverse;
            - List<@TimeLine> timeLines <-> task inverse;  // casovy sled udalosti s taskom
            - @Environment placement; // v akom prostredi je task
@@ -95,30 +98,37 @@ Application TaskManagement {
 
         enum TaskStatus {
              Created,  // ked klient vytvori novy incident
-             Returned, // ked klient vrati zo stavu resolved v prostredi TEST alebo RUT
-             Accepted, // developer nastavi ked zacne na nom pracovat na DEV prostredi
-             Resolved  // developer nastavi ked ho na DEV prostredi vyriesi
+             Returned, // ked klient vrati zo stavu resolved v prostredi TEST alebo RUT (na opravu)
+                       // status sa zmeni na Accepted a prostredie na DEV
+             Accepted, // developer nastavi ked zacne na nom pracovat v DEV alebo TEST prostredi
+                       // (nasleduje na zaciatku po Created, alebo po Returned, ak nejaka chyba na opravu)
+             Resolved  // developer nastavi ked ho v DEV alebo TEST prostredi vyriesi
         }
 
         // historia tasku napr.
-        // vytvoreny 1.9.2020 --> v rieseni 8.9.2020 --> vyrieseny 9.9.2020 --> nasadeny Test 1.10.2020 -->
+        // vytvoreny 1.9.2020 --> v rieseni (accepted) 8.9.2020 --> vyrieseny 9.9.2020 --> nasadeny Test 1.10.2020 -->
         // vrateny 2.10.2020 --> v rieseni 2.10.2020 --> nasadeny Test 2.10.2010 --> nasadeny RUT 1.12.2020
         Entity TimeLine {
             scaffold
-            Date date;
-            String label; // kombinacia TaskStatus a Environment a EndUser. Automaticky alebo aj rucne?
-            - @EndUser person; // kto zadal
+            Date date; // vygeneruje sa automaticky
+            String label; // automaticka kombinacia TaskStatus a Environment
+            - @EndUser person; // kto vytvoril
+            Long personId; // ak by sme chceli nacitat usera cez localhost pomocou Id (inak byt nemusi)
             - @Task task <-> timeLines cascade="persist,merge";  // k akemu tasku patri
 
             Repository TimeLineRepository {
                 findByCondition;
+
+                // Pokus o paging pri showlist. Zatial mi to nejde.
+                //PagedResult findByCondition(PagingParameter pagingParameter);
+                //findAll(PagingParameter pagingParameter);
             }
         }
 
         Entity EndUser {
             scaffold
             String name;
-            String role; // este sa doplni viac fieldov
+            String role; // este sa pripadne doplni viac fieldov
 
             Repository EndUserRepository {
                  findByCondition;
@@ -127,13 +137,13 @@ Application TaskManagement {
 
         Entity Communication {
             scaffold
-            - @Task task <-> communications cascade="persist,merge";  // k akemu tasku patri
-            Long taskId; // kvoli nacitaniu tasku cez localhost
+            - @Task task <-> communications;  // k akemu tasku patri
+            Long taskId; // kvoli moznosti nacitaniu task cez localhost pomocou Id
             - @EndUser sender cascade="persist,merge"; // aby mohli byt dve entity EndUsera pri Communication
             String senderName; // kvoli nacitaniu sendera cez localhost
             - @EndUser recipient cascade="persist,merge";
-            String recipientName;  // kvoli nacitaniu sendera cez localhost
-            String content;    // vlastna komunikacia
+            String recipientName;  // kvoli nacitaniu recipienta cez localhost
+            String content;    // vlastna komunikacia. Je potrebny dlhy String v db
             Date date; // den zapisu do systemu, vygeneruje sa automaticky
 
             Repository CommunicationRepository {
@@ -142,34 +152,63 @@ Application TaskManagement {
         }
 
         Service ProjectService {
-            findByCondition => ProjectRepository.findByCondition;
+        // najdi project podla mena
+        @Project findByName(String name);
+        // najdi Id podla mena
+        Long findIdByName(String name);
+
+        findByCondition => ProjectRepository.findByCondition;
         }
 
         Service DeploymentService {
-        // Najprv sa vytvori novy Deployment (ak neexistuje) s pozadovanym environmentom
-        // Pridat postupne jednotlive tasky do Deploymentu
-        // kontrola, ci vsetky Tasky su v current environmente
-        // label --> ready to deploy
-        @Deployment addTask(@Task task, @Environment currentEnvironment);
+        // Pri vytvoreni prveho projektu sa automaticky vygeneruju dva Deploymenty
+        // label- DEV --> TEST, resp. TEST --> RUT
+        // environment DEV alebo TEST
 
-        // Urobit deployment z currentEnvironment do noveho Environment pre vsetky tasky, ktore su ready
-        // label --> date + newEnvironment
+        // Nasledne sa pridaju jednotlive tasky do prislusneho Deploymentu podle environmentu
+        // kontrola, ci je task v prislusnom environmente
+        // kontrola, ci je Status v stave Resolved
+        @Deployment addTask(String taskName, @Environment currentEnvironment, String personName);
 
-        @Deployment toDeploy (
-            findByCondition => DeploymentRepository.findByCondition;
+        // pocet uloh pridanych do Depolymentu pre dany environment
+        // treba takto kvoli DeploymentResourcu, kde nechce nacitat tasky priamo z Repository
+        int findNumberAddedTasks(@Environment environment);
+
+        // Na koniec urobime deployment z currentEnvironment do noveho Environment
+        // pre vsetky tasky v Deploymente
+        // Nastavit aktualizovany placement v Tasku a
+        // vytvorit prislusnu TimeLine pre jednotlive tasky v deploymente
+        // Vyprazdnit Deployment o deployovane tasky
+        @Deployment toDeploy (@Environment currentEnvironment, String personName);
+
+        findByCondition => DeploymentRepository.findByCondition;
         }
 
         Service TaskService {
-            findByCondition => TaskRepository.findByCondition;
+        // Zmena statusu a zapis do TimeLine
+        // kontrola, ci moze ist o pozadovanu zmenu statusu
+        @Task changeStatus(String taskName, @TaskStatus newStatus, String personName);
+
+        // najdi task podla mena
+        @Task findByName(String name);
+        // najdi Id podla mena
+        Long findIdByName(String name);
+
+        findByCondition => TaskRepository.findByCondition;
         }
 
         Service TimeLineService {
-            findByCondition => TimeLineRepository.findByCondition;
+        // najst TimeLine podla Tasku
+        @TimeLine findByTask(@Task task);
+
+        findByCondition => TimeLineRepository.findByCondition;
         }
 
         Service EndUserService {
         // najdi usera podla mena
         @EndUser findByName(String name);
+        // najdi Id podla mena
+        Long findIdByName(String name);
 
         findByCondition => EndUserRepository.findByCondition;
         }
@@ -177,6 +216,7 @@ Application TaskManagement {
         Service CommunicationService {
         // vsetky komunikacie zoradene zostupne podla casu (od najnovsej po najstarsiu)
         // Vyuzivam pre metodu showAll v resource
+        // V TimeLine su metody priamo v Resource. Da sa tak aj tak.
         List<@Communication> orderByDateDesc();
 
         // to iste, ale casovo zoradene vzostupne (od najnovsej)

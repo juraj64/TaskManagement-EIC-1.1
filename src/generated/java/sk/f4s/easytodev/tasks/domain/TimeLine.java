@@ -48,6 +48,9 @@ public class TimeLine extends AbstractDomainObject implements Auditable, Identif
 	@Column(name = "LABEL", nullable = false, length = 100)
 	@NotNull
 	private String label;
+	@Column(name = "PERSONID", nullable = false)
+	@NotNull
+	private Long personId;
 	@Column(name = "UUID", nullable = false, length = 36, unique = true)
 	private String uuid;
 	@Temporal(TemporalType.TIMESTAMP)
@@ -107,6 +110,15 @@ public class TimeLine extends AbstractDomainObject implements Auditable, Identif
 
 	public void setLabel(String label) {
 		this.label = label;
+
+	}
+
+	public Long getPersonId() {
+		return personId;
+	}
+
+	public void setPersonId(Long personId) {
+		this.personId = personId;
 
 	}
 

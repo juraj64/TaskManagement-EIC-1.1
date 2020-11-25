@@ -16,6 +16,12 @@
 		<br/>
 		<form:errors cssClass="errors" id="_label" path="label"/>
 	</div>
+	<div id="timeLine_personId">
+		<label for="_personId">PersonId:</label>
+		<form:input cssStyle="width:300px" id="_personId" path="personId"/>
+		<br/>
+		<form:errors cssClass="errors" id="_personId" path="personId"/>
+	</div>
 	<div class="submit" id="timeLine_submit">
 		<input id="proceed" type="submit" value="Save"/>
 	</div>

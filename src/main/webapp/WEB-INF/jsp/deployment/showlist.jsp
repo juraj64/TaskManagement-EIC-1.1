@@ -1,7 +1,7 @@
 <jsp:directive.include file="/WEB-INF/jsp/includes.jsp"/>
 <jsp:directive.include file="/WEB-INF/jsp/header.jsp"/>
 <div>
-<a href="<c:url value="/rest/deployment/form" />">New Deployment</a>
+<h2>Deployments</h2>
 </div>
 <div>
 	<c:if test="${not empty result}">
@@ -9,7 +9,8 @@
 		<thead>
 		<th>Id</th>
 		<th>Label</th>
-		<th>Date</th>
+		<th>Environment</th>
+		<th>Origin Date</th>
 		<th/>
 		<th/>
 		</thead>
@@ -22,10 +23,10 @@
 					${each.label}
 				</td>
 				<td>
-					${each.date}
-				</td>
+                	${each.environment}
+                </td>
 				<td>
-					<a href="<c:url value="/rest/deployment/${each.id}" />">Show</a>
+					${each.date}
 				</td>
 				<td>
 					<c:url value="/rest/deployment/${each.id}" var="action"/>
